@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#ff7949',
+            brandDark: '#132d48',
+          }
+        }
+      }
+    }
+  </script>
+
+  <title>패스오더 설문</title>
+</head>
+
+<body class="bg-white px-6 pt-10">
+
+  <h1 class="text-2xl font-bold text-brandDark text-center mb-6">간단 확인 설문</h1>
+
+  <form method="POST"
+        action="https://script.google.com/macros/s/WEBAPP_ID/exec"
+        class="flex flex-col gap-5">
+
+    <!-- UID -->
+    <input type="hidden" name="uid" id="uid-field"/>
+
+    <!-- 역할 선택 -->
+    <div>
+      <label class="font-medium text-brandDark block mb-2">당신은 누구신가요?</label>
+      <select name="role" id="role-select" class="border px-3 py-2 rounded w-full">
+        <option value="">선택해주세요</option>
+        <option value="owner">사장님</option>
+        <option value="staff">알바</option>
+      </select>
+    </div>
+
+    <!-- 사장님일 경우: 사업자번호 -->
+    <div id="owner-field" class="hidden">
+      <label class="font-medium text-brandDark block mb-2">사업자번호를 입력해주세요</label>
+      <input type="text" name="businessNumber"
+             class="border px-3 py-2 rounded w-full"
+             placeholder="ex) 123-45-67890">
+    </div>
+
+    <!-- 알바일 경우: 사장님 번호 -->
+    <div id="staff-field" class="hidden">
+      <label class="font-medium text-brandDark block mb-2">사장님 전화번호를 입력해주세요</label>
+      <input type="text" name="ownerPhone"
+             class="border px-3 py-2 rounded w-full"
+             placeholder="ex) 010-1234-5678">
+    </div>
+
+    <button class="bg-brand text-white py-3 rounded-lg text-lg font-semibold">
+      제출하기
+    </button>
+  </form>
+
+
+  <!-- JS: UID 전달 + 역할에 따른 입력 필드 표시 -->
+  <script>
+    // UID 전달
+    const params = new URLSearchParams(location.search);
+    const uid = params.get("uid");
+    document.getElementById("uid-field").value = uid;
+
+    // 필드 표시 로직
+    const roleSelect = document.getElementById("role-select");
+    const ownerField = document.getElementById("owner-field");
+    const staffField = document.getElementById("staff-field");
+
+    roleSelect.addEventListener("change", () => {
+      const role = roleSelect.value;
+
+      if (role === "owner") {
+        ownerField.classList.remove("hidden");
+        staffField.classList.add("hidden");
+      } else if (role === "staff") {
+        staffField.classList.remove("hidden");
+        ownerField.classList.add("hidden");
+      } else {
+        ownerField.classList.add("hidden");
+        staffField.classList.add("hidden");
+      }
+    });
+  </script>
+
+</body>
+</html>
