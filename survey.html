@@ -16,20 +16,17 @@
   </script>
 
   <style>
-    /* ▼▼▼ [수정됨] 당겨서 새로고침 완벽 차단 ▼▼▼ */
+    /* 당겨서 새로고침 차단 & 스크롤 튕김 방지 */
     html, body {
-      overscroll-behavior-y: none; /* 상단 당겨서 새로고침, 하단 바운스 효과 제거 */
-      touch-action: pan-y;         /* 상하 스크롤은 허용하되, 좌우/줌/새로고침 제스처 차단 */
-      height: 100%;                /* 화면 높이 고정 */
-      overflow-x: hidden;          /* 좌우 스크롤 방지 */
+      overscroll-behavior-y: none;
+      touch-action: pan-y;
+      height: 100%;
+      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
-    
     .safe-bottom { padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)); }
-    
-    /* 화면 전환 애니메이션 효과 */
-    .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 
   <title>패스오더 매장 정보 확인</title>
@@ -60,35 +57,60 @@
 
             <div id="owner-fields" class="hidden flex flex-col gap-5">
                 <div class="flex flex-col gap-2">
-                <label class="text-brandDark font-semibold">매장명</label>
-                <input type="text" id="owner-store" name="storeName" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
+                    <label class="text-brandDark font-semibold">매장명</label>
+                    <input type="text" id="owner-store" name="storeName" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
                 </div>
                 <div class="flex flex-col gap-2">
-                <label class="text-brandDark font-semibold">사업자등록번호</label>
-                <input type="text" id="biz-number" name="businessNumber" placeholder="숫자 10자리" maxlength="10" inputmode="numeric" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
+                    <label class="text-brandDark font-semibold">사업자등록번호</label>
+                    <input type="text" id="biz-number" name="businessNumber" placeholder="숫자 10자리" maxlength="10" inputmode="numeric" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
                 </div>
                 <div class="flex flex-col gap-2">
-                <label class="text-brandDark font-semibold">휴대폰 번호</label>
-                <input type="text" id="owner-phone" name="phone" placeholder="010-0000-0000" maxlength="13" inputmode="numeric" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
+                    <label class="text-brandDark font-semibold">휴대폰 번호</label>
+                    <input type="text" id="owner-phone" name="phone" placeholder="010-0000-0000" maxlength="13" inputmode="numeric" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
                 </div>
                 <div class="flex items-center gap-2 mt-2">
-                <input type="checkbox" id="agree" name="agreement" value="Y" class="w-5 h-5" />
-                <label for="agree" class="text-[15px] text-gray-700">개인정보 수집 및 이용에 동의합니다 (필수)</label>
+                    <input type="checkbox" id="agree" name="agreement" value="Y" class="w-5 h-5" />
+                    <label for="agree" class="text-[15px] text-gray-700">개인정보 수집 및 이용에 동의합니다 (필수)</label>
                 </div>
+                <button type="submit" id="owner-submit-btn" class="w-full bg-gray-300 text-white py-4 rounded-xl text-[17px] font-bold shadow-md transition mt-2" disabled>제출하기</button>
             </div>
 
-            <div id="staff-fields" class="hidden flex flex-col gap-5">
-                <div class="flex flex-col gap-2">
-                <label class="text-brandDark font-semibold">매장명</label>
-                <input type="text" id="staff-store" name="storeNameStaff" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
+            <div id="staff-fields" class="hidden">
+                
+                <div id="staff-step-1" class="flex flex-col gap-5 fade-in">
+                    <div class="flex flex-col gap-2">
+                        <label class="text-brandDark font-semibold">매장명</label>
+                        <input type="text" id="staff-store" name="storeNameStaff" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label class="text-brandDark font-semibold">이름</label>
+                        <input type="text" id="staff-name" name="staffName" placeholder="본인 이름을 입력해주세요" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
+                    </div>
+
+                    <button type="button" id="staff-next-btn" class="w-full bg-gray-300 text-white py-4 rounded-xl text-[17px] font-bold shadow-md transition mt-2" disabled>다음</button>
                 </div>
-                <div class="flex flex-col gap-2">
-                <label class="text-brandDark font-semibold">사장님 휴대폰 번호</label>
-                <input type="text" id="staff-owner-phone" name="ownerPhone" placeholder="010-0000-0000" maxlength="13" inputmode="numeric" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
+
+                <div id="staff-step-2" class="hidden flex flex-col gap-5 fade-in">
+                    
+                    <div class="bg-red-50 border border-red-100 p-4 rounded-xl text-center">
+                        <p class="text-red-600 font-bold text-[15px] leading-relaxed break-keep">
+                            ⚠️ 잠깐! 사장님 번호가 맞나요?<br>
+                            사장님께 확인 문자가 발송됩니다.<br>
+                            정확한 번호를 입력해주세요.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="text-brandDark font-semibold">사장님 휴대폰 번호</label>
+                        <input type="text" id="staff-owner-phone" name="ownerPhone" placeholder="010-0000-0000" maxlength="13" inputmode="numeric" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
+                    </div>
+
+                    <button type="submit" id="staff-submit-btn" class="w-full bg-gray-300 text-white py-4 rounded-xl text-[17px] font-bold shadow-md transition mt-2" disabled>사장님께 전달하기</button>
                 </div>
+
             </div>
 
-            <button id="submit-btn" class="w-full bg-gray-300 text-white py-4 rounded-xl text-[17px] font-bold shadow-md transition" disabled>제출하기</button>
         </form>
     </div>
 
@@ -102,7 +124,7 @@
   </div>
 
   <script>
-    /* 1. 기본 설정 및 파라미터 */
+    /* 1. 기본 설정 */
     const params = new URLSearchParams(location.search);
     const uid = params.get("uid") || "";
     const variant = params.get("variant") || "";
@@ -119,38 +141,101 @@
     const formContainer = document.getElementById("form-container");
     const successView = document.getElementById("success-view");
     const form = document.getElementById("info-form");
-
     const roleSelect = document.getElementById("role-select");
+
+    // 섹션
     const ownerFields = document.getElementById("owner-fields");
     const staffFields = document.getElementById("staff-fields");
-    const submitBtn = document.getElementById("submit-btn");
-    const agree = document.getElementById("agree");
+    const staffStep1 = document.getElementById("staff-step-1");
+    const staffStep2 = document.getElementById("staff-step-2");
 
+    // 입력 필드 - 사장님
     const ownerStore = document.getElementById("owner-store");
     const ownerPhone = document.getElementById("owner-phone");
     const bizNumber = document.getElementById("biz-number");
+    const agree = document.getElementById("agree");
+    const ownerSubmitBtn = document.getElementById("owner-submit-btn");
+
+    // 입력 필드 - 직원
     const staffStore = document.getElementById("staff-store");
+    const staffName = document.getElementById("staff-name"); // 신규
     const staffOwnerPhone = document.getElementById("staff-owner-phone");
+    const staffNextBtn = document.getElementById("staff-next-btn"); // 신규
+    const staffSubmitBtn = document.getElementById("staff-submit-btn"); // 신규
 
-    /* 3. 역할 선택 로직 */
+
+    /* 3. 역할 변경 로직 */
     roleSelect.addEventListener("change", () => {
-      ownerFields.classList.toggle("hidden", roleSelect.value !== "owner");
-      staffFields.classList.toggle("hidden", roleSelect.value !== "staff");
-      checkSubmitAllowed();
+      const isOwner = roleSelect.value === "owner";
+      const isStaff = roleSelect.value === "staff";
+
+      ownerFields.classList.toggle("hidden", !isOwner);
+      staffFields.classList.toggle("hidden", !isStaff);
+      
+      // 직원 선택 시, 항상 Step 1부터 시작하도록 리셋
+      if(isStaff) {
+        staffStep1.classList.remove("hidden");
+        staffStep2.classList.add("hidden");
+      }
+      checkValidation();
     });
 
-    if (agree) agree.addEventListener("change", checkSubmitAllowed);
-    [ownerStore, ownerPhone, bizNumber, staffStore, staffOwnerPhone].forEach(el => {
-      if (el) el.addEventListener("input", checkSubmitAllowed);
+
+    /* 4. 직원: '다음' 버튼 클릭 로직 */
+    staffNextBtn.addEventListener("click", () => {
+        // Step 1 숨기고 Step 2 보여주기
+        staffStep1.classList.add("hidden");
+        staffStep2.classList.remove("hidden");
     });
 
-    /* 4. 제출 버튼 클릭 시 화면 전환 로직 */
+
+    /* 5. 통합 유효성 검사 (입력할 때마다 버튼 활성화 체크) */
+    function checkValidation() {
+        // [사장님 검사]
+        if (!ownerFields.classList.contains("hidden")) {
+            if (ownerStore.value && bizNumber.value.length === 10 && ownerPhone.value && agree.checked) {
+                enableBtn(ownerSubmitBtn);
+            } else {
+                disableBtn(ownerSubmitBtn);
+            }
+        }
+
+        // [직원 검사]
+        if (!staffFields.classList.contains("hidden")) {
+            // Step 1: 매장명 & 이름
+            if (staffStore.value && staffName.value) {
+                enableBtn(staffNextBtn);
+            } else {
+                disableBtn(staffNextBtn);
+            }
+
+            // Step 2: 사장님 번호
+            if (staffOwnerPhone.value) {
+                enableBtn(staffSubmitBtn);
+            } else {
+                disableBtn(staffSubmitBtn);
+            }
+        }
+    }
+
+    // 모든 입력 필드에 이벤트 걸기
+    const allInputs = [ownerStore, ownerPhone, bizNumber, agree, staffStore, staffName, staffOwnerPhone];
+    allInputs.forEach(el => {
+        if(el) el.addEventListener("input", checkValidation);
+    });
+    if(agree) agree.addEventListener("change", checkValidation);
+
+
+    /* 6. 제출 로직 (공통) */
     form.addEventListener("submit", (e) => {
       e.preventDefault(); 
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = "제출 중...";
-      submitBtn.classList.replace("bg-brand", "bg-gray-400");
+      
+      // 현재 눌린 버튼 찾기 (UX용)
+      const activeBtn = !ownerFields.classList.contains("hidden") ? ownerSubmitBtn : staffSubmitBtn;
+      
+      activeBtn.disabled = true;
+      activeBtn.textContent = "처리 중...";
+      activeBtn.classList.replace("bg-brand", "bg-gray-400");
 
       const formData = new FormData(form);
 
@@ -163,28 +248,20 @@
         formContainer.style.display = 'none';
         successView.classList.remove("hidden");
       })
-      .catch(error => {
+      .catch(() => {
         formContainer.style.display = 'none';
         successView.classList.remove("hidden");
       });
     });
 
-    /* 5. 유효성 검사 및 포맷팅 */
-    function checkSubmitAllowed() {
-      const role = roleSelect.value;
-      if (role === "owner" && ownerStore.value && bizNumber.value.length === 10 && ownerPhone.value && agree.checked) return enableSubmit();
-      if (role === "staff" && staffStore.value && staffOwnerPhone.value) return enableSubmit();
-      disableSubmit();
+    /* 7. 유틸리티 & 포맷팅 */
+    function enableBtn(btn) {
+        btn.disabled = false;
+        btn.classList.replace("bg-gray-300", "bg-brand");
     }
-
-    function enableSubmit() {
-      submitBtn.disabled = false;
-      submitBtn.classList.replace("bg-gray-300", "bg-brand");
-    }
-
-    function disableSubmit() {
-      submitBtn.disabled = true;
-      submitBtn.classList.replace("bg-brand", "bg-gray-300");
+    function disableBtn(btn) {
+        btn.disabled = true;
+        btn.classList.replace("bg-brand", "bg-gray-300");
     }
 
     function formatPhone(input) {
