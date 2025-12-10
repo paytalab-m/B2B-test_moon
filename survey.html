@@ -35,9 +35,11 @@
           action="https://script.google.com/macros/s/AKfycbw6NxWa7BXpWrvKPCaHXJsmAYsOZ6FfIFo0cXNd911AA-ZOJXUlvFf7avD9EvYMY2Mg/exec"
           class="flex flex-col gap-6 bg-white p-6 rounded-2xl shadow-sm">
 
+      <!-- Hidden fields -->
       <input type="hidden" id="uid-field" name="uid" />
+      <input type="hidden" id="variant-field" name="variant" />  <!-- ★ variant 추가 -->
 
-      <!-- 사용자 유형 선택 -->
+      <!-- Role 선택 -->
       <div class="flex flex-col gap-2">
         <label class="text-brandDark font-semibold">사장님이신가요?</label>
         <select id="role-select" name="role"
@@ -48,7 +50,7 @@
         </select>
       </div>
 
-      <!-- 사장님용 입력 -->
+      <!-- 사장님 입력 -->
       <div id="owner-fields" class="hidden flex flex-col gap-5">
 
         <div class="flex flex-col gap-2">
@@ -77,7 +79,7 @@
         </div>
       </div>
 
-      <!-- 직원(아르바이트) 입력 -->
+      <!-- 직원 입력 -->
       <div id="staff-fields" class="hidden flex flex-col gap-5">
 
         <div class="flex flex-col gap-2">
@@ -92,25 +94,31 @@
             maxlength="13"
             class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
         </div>
-
       </div>
 
       <!-- 제출 버튼 -->
       <button id="submit-btn"
         class="w-full bg-gray-300 text-white py-4 rounded-xl text-[17px] font-bold shadow-md transition"
         disabled>제출하기</button>
+
     </form>
   </div>
 
-<script>
-  const params = new URLSearchParams(location.search);
-  document.getElementById("uid-field").value = params.get("uid") || "";
 
+<script>
+  /* URL Params에서 uid + variant 가져오기 */
+  const params = new URLSearchParams(location.search);
+
+  document.getElementById("uid-field").value = params.get("uid") || "";
+  document.getElementById("variant-field").value = params.get("variant") || "";   // ★ variant 주입
+
+
+  /* DOM */
   const roleSelect = document.getElementById("role-select");
   const ownerFields = document.getElementById("owner-fields");
   const staffFields = document.getElementById("staff-fields");
-  const agree = document.getElementById("agree");
   const submitBtn = document.getElementById("submit-btn");
+  const agree = document.getElementById("agree");
 
   const ownerStore = document.getElementById("owner-store");
   const ownerPhone = document.getElementById("owner-phone");
@@ -119,39 +127,39 @@
   const staffStore = document.getElementById("staff-store");
   const staffOwnerPhone = document.getElementById("staff-owner-phone");
 
-  /* 역할 선택 시 표시 전환 */
+
+  /* 역할 변경 시 UI 전환 */
   roleSelect.addEventListener("change", () => {
-    const v = roleSelect.value;
-
-    ownerFields.classList.toggle("hidden", v !== "owner");
-    staffFields.classList.toggle("hidden", v !== "staff");
-
+    ownerFields.classList.toggle("hidden", roleSelect.value !== "owner");
+    staffFields.classList.toggle("hidden", roleSelect.value !== "staff");
     checkSubmitAllowed();
   });
 
   /* 사장님 동의 체크 */
-  if (agree) {
-    agree.addEventListener("change", checkSubmitAllowed);
-  }
+  if (agree) agree.addEventListener("change", checkSubmitAllowed);
 
-  /* 입력값 변경 시 버튼 활성화 체크 */
-  ;[ownerStore, ownerPhone, bizNumber, staffStore, staffOwnerPhone].forEach(el => {
+  /* 공통 입력 이벤트 */
+  [ownerStore, ownerPhone, bizNumber, staffStore, staffOwnerPhone].forEach(el => {
     if (el) el.addEventListener("input", checkSubmitAllowed);
   });
 
+  /* 제출 가능 여부 체크 */
   function checkSubmitAllowed() {
     const role = roleSelect.value;
 
     if (role === "owner") {
-      if (ownerStore.value && ownerPhone.value && bizNumber.value.length === 10 && agree.checked) {
+      if (
+        ownerStore.value &&
+        bizNumber.value.length === 10 &&
+        ownerPhone.value &&
+        agree.checked
+      ) {
         return enableSubmit();
       }
     }
 
     if (role === "staff") {
-      if (staffStore.value && staffOwnerPhone.value) {
-        return enableSubmit();
-      }
+      if (staffStore.value && staffOwnerPhone.value) return enableSubmit();
     }
 
     disableSubmit();
@@ -169,7 +177,7 @@
     submitBtn.classList.remove("bg-brand");
   }
 
-  /* 휴대폰 번호 자동 하이픈 */
+  /* 전화번호 자동 하이픈 */
   function formatPhone(input) {
     let v = input.value.replace(/[^0-9]/g, "");
     if (v.length <= 3) input.value = v;
@@ -181,9 +189,8 @@
   staffOwnerPhone.addEventListener("input", e => formatPhone(e.target));
 
   bizNumber.addEventListener("input", e => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, "").slice(0, 10);
+    e.target.value = e.target.value.replace(/[^0-9]/g, "").slice(0,10);
   });
-
 </script>
 
 </body>
