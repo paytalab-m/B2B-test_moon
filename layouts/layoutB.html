@@ -1,13 +1,80 @@
-<div class="min-h-screen bg-[#132d48] flex flex-col items-center justify-center px-6 text-white">
-  
-  <h1 class="text-2xl font-bold mb-4">패스오더 안내 (B 버전)</h1>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 모바일 스크롤 튕김 및 줌 방지 */
+    html, body { overscroll-behavior-y: none; touch-action: pan-y; height: 100%; overflow: hidden; }
+    .safe-bottom { padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)); }
+  </style>
+</head>
+<body class="bg-[#FFFAEB] flex flex-col items-center justify-center px-6 font-sans relative">
 
-  <p class="text-center text-[15px] mb-8 text-white/90">
-    아래 QR을 스캔하고 도입 절차를 확인해주세요.
-  </p>
+  <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400"></div>
 
-  <div class="bg-white rounded-xl p-4 shadow-lg">
-    <img src="{{QR_SRC}}" class="w-56 h-56" />
+  <div class="mb-6 animate-bounce">
+    <span class="bg-[#B45309] text-white px-4 py-2 rounded-full text-[13px] font-bold shadow-lg flex items-center gap-2 tracking-wide">
+      🎁 도입 매장 한정 혜택
+    </span>
   </div>
 
-</div>
+  <div class="text-center mb-6 w-full max-w-[340px]">
+    <h1 class="text-[26px] font-extrabold text-[#1f2937] leading-tight mb-2 tracking-tight break-keep">
+      사장님께 도착한<br>
+      <span class="text-[#D97706] border-b-4 border-yellow-200">120만원 상당</span>의 지원금
+    </h1>
+    <p class="text-gray-500 text-[14px]">
+      지금 본인 확인 시, 아래 혜택이 <b>확보</b>됩니다.
+    </p>
+  </div>
+
+  <div class="bg-white border border-yellow-200 rounded-2xl p-5 shadow-sm w-full max-w-[320px] mb-8 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-16 h-16 bg-yellow-100 rounded-bl-full opacity-50 -mr-2 -mt-2"></div>
+    
+    <ul class="space-y-4 relative z-10">
+      <li class="flex items-start gap-3">
+        <div class="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold mt-0.5">1</div>
+        <div>
+          <p class="text-gray-900 font-bold text-[15px]">아메리카노 100원딜 지원</p>
+          <p class="text-gray-500 text-[12px]">손님 모으는 이벤트 비용 전액 부담</p>
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <div class="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold mt-0.5">2</div>
+        <div>
+          <p class="text-gray-900 font-bold text-[15px]">120만원 상당 혜택 패키지</p>
+          <p class="text-gray-500 text-[12px]">수수료/가입비 등 실질적 비용 절감</p>
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <div class="bg-orange-100 text-orange-600 rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold mt-0.5">3</div>
+        <div>
+          <p class="text-gray-900 font-bold text-[15px]">오프라인 홍보물 무상 제공</p>
+          <p class="text-gray-500 text-[12px]">배너, 키트 등 홍보 물품 무료 배송</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="relative bg-white p-2 rounded-[30px] border-2 border-yellow-400 shadow-xl mb-4">
+    <div class="border border-dashed border-gray-300 rounded-[24px] p-2 flex items-center justify-center">
+       <img src="{{QR_SRC}}" class="w-[50vw] max-w-[200px] h-[50vw] max-h-[200px] object-contain rounded-lg" alt="QR Code" />
+    </div>
+    
+    <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-max">
+      <div class="bg-[#1f2937] text-white px-4 py-1.5 rounded-full text-[12px] font-bold shadow-lg flex items-center gap-1">
+        혜택 대상자 본인 인증하기 ▶
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <p class="text-gray-400 text-[11px] font-medium">
+      * 위 혜택은 서비스 도입 확정 시 제공됩니다.
+    </p>
+  </div>
+
+</body>
+</html>
