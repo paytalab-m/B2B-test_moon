@@ -2,31 +2,41 @@
   
   <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 via-red-600 to-red-500 z-0"></div>
 
-  <div class="mb-4 mt-8 animate-bounce z-10">
-    <span class="bg-red-600 text-white px-4 py-2 rounded-full text-[13px] font-bold shadow-lg flex items-center gap-2 tracking-wide">
+  <div class="mb-5 mt-4 animate-bounce z-10">
+    <span class="bg-red-600 text-white px-4 py-1.5 rounded-full text-[13px] font-bold shadow-lg flex items-center gap-2 tracking-wide">
       ⚠️ 긴급 점검 요청
     </span>
   </div>
 
-  <div class="text-center mb-6 w-full max-w-[320px] z-10">
-    <h1 class="text-[22px] font-extrabold text-[#132d48] leading-tight mb-3 tracking-tight">
+  <div class="text-center mb-8 w-full max-w-[320px] z-10">
+    <h1 class="text-[24px] font-extrabold text-[#132d48] leading-tight mb-4 tracking-tight">
       컴플레인 확인 요청
     </h1>
-    <p class="text-[#475569] text-[15px] leading-snug break-keep font-medium">
-      사장님!, 앱에 등록된 메뉴/가격이<br>
-      매장과 달라 고객 컴플레인이 발생했어요
+    
+    <p class="text-[#334155] text-[16px] leading-relaxed break-keep font-medium">
+      사장님! 앱에 등록된 
+      <span class="text-red-600 font-extrabold relative inline-block">
+        메뉴/가격
+        <span class="absolute bottom-0 left-0 w-full h-[6px] bg-red-200/50 -z-10"></span>
+      </span>이<br>
+      매장과 달라 
+      <span class="text-red-600 font-extrabold relative inline-block">
+        고객 컴플레인
+        <span class="absolute bottom-0 left-0 w-full h-[6px] bg-red-200/50 -z-10"></span>
+      </span>이<br>
+      발생했습니다.
     </p>
   </div>
   
   <div class="mb-8 z-10 w-full max-w-[320px]">
-      <div class="bg-white border border-red-100 rounded-xl p-4 shadow-sm text-left relative">
-        <div class="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-t border-l border-red-100 rotate-45"></div>
+      <div class="bg-white border-2 border-red-100 rounded-xl p-5 shadow-[0_4px_15px_rgba(239,68,68,0.1)] text-left relative">
+        <div class="absolute -top-2.5 left-1/2 transform -translate-x-1/2 w-5 h-5 bg-white border-t-2 border-l-2 border-red-100 rotate-45"></div>
         
         <div class="flex items-start gap-3">
-          <span class="text-2xl min-w-[24px]">📢</span>
+          <span class="text-2xl min-w-[24px] mt-0.5">📢</span>
           <div>
-            <p class="text-gray-900 font-bold text-[13px] mb-1">고객 불만 접수 내용</p>
-            <p class="text-gray-600 text-[13px] leading-snug break-keep">
+            <p class="text-[#132d48] font-bold text-[14px] mb-1">고객 불만 접수 내용</p>
+            <p class="text-gray-600 text-[14px] leading-snug break-keep bg-gray-50 p-2 rounded-lg">
               "앱 보고 주문하려는데 매장가격이랑 달라요. 메뉴판 업데이트 좀 해주세요."
             </p>
           </div>
@@ -34,29 +44,27 @@
       </div>
   </div>
 
-  <div class="relative group mb-8 z-10">
+  <div class="relative group mb-6 z-10">
     <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-red-400 rounded-[35px] blur opacity-20 animate-pulse"></div>
     
     <div class="relative bg-white p-2 rounded-[30px] border-2 border-red-100 shadow-xl">
       <div class="border border-dashed border-gray-300 rounded-[24px] p-2 bg-white flex items-center justify-center">
-         
          <img src="{{QR_SRC}}" class="w-[55vw] max-w-[220px] h-[55vw] max-h-[220px] object-contain rounded-lg" alt="QR Code" />
-         
       </div>
       
       <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-max">
-        <div class="bg-[#132d48] text-white px-5 py-2 rounded-full text-[12px] font-bold shadow-lg flex items-center gap-1">
-          ▲ 지금 바로 수정하기 ▲
+        <div class="bg-[#132d48] text-white px-6 py-2 rounded-full text-[13px] font-bold shadow-lg flex items-center gap-1 hover:scale-105 transition-transform">
+          지금 바로 수정하기 →
         </div>
       </div>
     </div>
   </div>
 
-  <div class="text-center space-y-2 z-10">
-    <p class="text-[#132d48] font-bold text-[16px]">
-      총 4건의 고객 컴플레인이 있습니다.
+  <div class="text-center space-y-2 z-10 mb-12">
+    <p class="text-[#132d48] font-bold text-[18px]">
+      총 <span class="text-red-600 text-[22px] font-extrabold">3건</span>의 고객 컴플레인이 있습니다.
     </p>
   </div>
 
-  <div class="absolute bottom-2 right-2 text-[9px] text-gray-300 opacity-50 z-0">Type: A (New Text)</div>
+  <div class="absolute bottom-2 right-2 text-[9px] text-gray-300 opacity-50 z-0">Type: A (Bold)</div>
 </div>
