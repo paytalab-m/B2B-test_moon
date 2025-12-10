@@ -15,9 +15,12 @@
     const uid = params.get("uid") || "unknown";
     const variant = params.get("variant") || "A";
 
-    const gasUrl =
-      "https://script.google.com/macros/s/AKfycbw6NxWa7BXpWrvKPCaHXJsmAYsOZ6FfIFo0cXNd911AA-ZOJXUlvFf7avD9EvYMY2Mg/exec";
-    const scanUrl = `${gasUrl}?uid=${uid}&variant=${variant}`;
+    // ▼▼▼ [수정됨] 구글 주소가 아니라, 사장님께 보여줄 GitHub 페이지 주소로 변경 ▼▼▼
+    // (이렇게 해야 QR 찍었을 때 상단 배너가 안 뜹니다)
+    const targetUrl = "https://paytalab-m.github.io/B2B-test_moon/survey.html";
+    
+    // URL 생성 (Github 주소로 파라미터 전달)
+    const scanUrl = `${targetUrl}?uid=${uid}&variant=${variant}`;
 
     fetch(`./layouts/layout${variant}.html`)
       .then(res => res.text())
