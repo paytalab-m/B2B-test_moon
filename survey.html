@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -18,28 +18,37 @@
     }
   </script>
 
+  <style>
+    /* [전략 4] 스크롤 튕김(Bouncing) 방지 */
+    body {
+      overscroll-behavior-y: none;
+    }
+    /* [전략 3] 아이폰 하단 홈 바(Safe Area) 대응 */
+    .safe-bottom {
+      padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
+    }
+  </style>
+
   <title>패스오더 매장 정보 확인</title>
 </head>
 
 <body class="bg-gray-50 min-h-screen">
 
-  <div class="w-full max-w-[420px] mx-auto px-5 py-10 flex flex-col gap-8">
+  <div class="w-full max-w-[420px] mx-auto px-5 pt-10 safe-bottom flex flex-col gap-8">
 
     <header class="text-center">
       <h1 class="text-2xl font-bold text-brandDark leading-tight">사장님 확인이 필요해요</h1>
       <p class="text-gray-600 text-[15px] mt-2">실제 매장을 운영하시는 사장님이신지 확인을 위해 요청드립니다.</p>
     </header>
 
-    <form method="POST"
+    <form id="info-form" method="POST"
           target="_self"
           action="https://script.google.com/macros/s/AKfycbw6NxWa7BXpWrvKPCaHXJsmAYsOZ6FfIFo0cXNd911AA-ZOJXUlvFf7avD9EvYMY2Mg/exec"
           class="flex flex-col gap-6 bg-white p-6 rounded-2xl shadow-sm">
 
-      <!-- Hidden fields -->
       <input type="hidden" id="uid-field" name="uid" />
-      <input type="hidden" id="variant-field" name="variant" />  <!-- ★ variant 추가 -->
+      <input type="hidden" id="variant-field" name="variant" />
 
-      <!-- Role 선택 -->
       <div class="flex flex-col gap-2">
         <label class="text-brandDark font-semibold">사장님이신가요?</label>
         <select id="role-select" name="role"
@@ -50,7 +59,6 @@
         </select>
       </div>
 
-      <!-- 사장님 입력 -->
       <div id="owner-fields" class="hidden flex flex-col gap-5">
 
         <div class="flex flex-col gap-2">
@@ -62,14 +70,14 @@
         <div class="flex flex-col gap-2">
           <label class="text-brandDark font-semibold">사업자등록번호</label>
           <input type="text" id="biz-number" name="businessNumber" placeholder="숫자 10자리"
-            maxlength="10"
+            maxlength="10" inputmode="numeric" pattern="[0-9]*"
             class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
         </div>
 
         <div class="flex flex-col gap-2">
           <label class="text-brandDark font-semibold">휴대폰 번호</label>
           <input type="text" id="owner-phone" name="phone" placeholder="010-0000-0000"
-            maxlength="13"
+            maxlength="13" inputmode="numeric" pattern="[0-9]*"
             class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
         </div>
 
@@ -79,7 +87,6 @@
         </div>
       </div>
 
-      <!-- 직원 입력 -->
       <div id="staff-fields" class="hidden flex flex-col gap-5">
 
         <div class="flex flex-col gap-2">
@@ -91,14 +98,13 @@
         <div class="flex flex-col gap-2">
           <label class="text-brandDark font-semibold">사장님 휴대폰 번호</label>
           <input type="text" id="staff-owner-phone" name="ownerPhone" placeholder="010-0000-0000"
-            maxlength="13"
+            maxlength="13" inputmode="numeric" pattern="[0-9]*"
             class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50"/>
         </div>
       </div>
 
-      <!-- 제출 버튼 -->
       <button id="submit-btn"
-        class="w-full bg-gray-300 text-white py-4 rounded-xl text-[17px] font-bold shadow-md transition"
+        class="w-full bg-gray-300 text-white py-4 rounded-xl text-[17px] font-bold shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed"
         disabled>제출하기</button>
 
     </form>
@@ -110,10 +116,11 @@
   const params = new URLSearchParams(location.search);
 
   document.getElementById("uid-field").value = params.get("uid") || "";
-  document.getElementById("variant-field").value = params.get("variant") || "";   // ★ variant 주입
+  document.getElementById("variant-field").value = params.get("variant") || "";
 
 
   /* DOM */
+  const form = document.getElementById("info-form"); // Form ID 추가
   const roleSelect = document.getElementById("role-select");
   const ownerFields = document.getElementById("owner-fields");
   const staffFields = document.getElementById("staff-fields");
@@ -141,6 +148,14 @@
   /* 공통 입력 이벤트 */
   [ownerStore, ownerPhone, bizNumber, staffStore, staffOwnerPhone].forEach(el => {
     if (el) el.addEventListener("input", checkSubmitAllowed);
+  });
+
+  /* [전략 5] 제출 시 로딩 피드백 (중복 제출 방지) */
+  form.addEventListener("submit", () => {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "제출 중...";
+    submitBtn.classList.remove("bg-brand");
+    submitBtn.classList.add("bg-gray-400");
   });
 
   /* 제출 가능 여부 체크 */
