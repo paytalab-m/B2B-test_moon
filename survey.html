@@ -46,7 +46,7 @@
             <input type="hidden" id="uid-field" name="uid" />
             <input type="hidden" id="variant-field" name="variant" />
 
-            <div class="flex flex-col gap-2">
+            <div id="role-section" class="flex flex-col gap-2 transition-all duration-300">
                 <label class="text-brandDark font-semibold">사장님이신가요?</label>
                 <select id="role-select" name="role" class="border border-gray-300 px-4 py-3 rounded-xl text-[16px] bg-gray-50 focus:bg-white">
                 <option value="">선택해주세요</option>
@@ -142,26 +142,24 @@
     const successView = document.getElementById("success-view");
     const form = document.getElementById("info-form");
     const roleSelect = document.getElementById("role-select");
+    const roleSection = document.getElementById("role-section"); // 섹션 선택 추가
 
-    // 섹션
     const ownerFields = document.getElementById("owner-fields");
     const staffFields = document.getElementById("staff-fields");
     const staffStep1 = document.getElementById("staff-step-1");
     const staffStep2 = document.getElementById("staff-step-2");
 
-    // 입력 필드 - 사장님
     const ownerStore = document.getElementById("owner-store");
     const ownerPhone = document.getElementById("owner-phone");
     const bizNumber = document.getElementById("biz-number");
     const agree = document.getElementById("agree");
     const ownerSubmitBtn = document.getElementById("owner-submit-btn");
 
-    // 입력 필드 - 직원
     const staffStore = document.getElementById("staff-store");
-    const staffName = document.getElementById("staff-name"); // 신규
+    const staffName = document.getElementById("staff-name");
     const staffOwnerPhone = document.getElementById("staff-owner-phone");
-    const staffNextBtn = document.getElementById("staff-next-btn"); // 신규
-    const staffSubmitBtn = document.getElementById("staff-submit-btn"); // 신규
+    const staffNextBtn = document.getElementById("staff-next-btn");
+    const staffSubmitBtn = document.getElementById("staff-submit-btn");
 
 
     /* 3. 역할 변경 로직 */
@@ -172,10 +170,10 @@
       ownerFields.classList.toggle("hidden", !isOwner);
       staffFields.classList.toggle("hidden", !isStaff);
       
-      // 직원 선택 시, 항상 Step 1부터 시작하도록 리셋
       if(isStaff) {
         staffStep1.classList.remove("hidden");
         staffStep2.classList.add("hidden");
+        roleSection.classList.remove("hidden"); // 다시 돌아왔을 때 보이게
       }
       checkValidation();
     });
@@ -186,10 +184,13 @@
         // Step 1 숨기고 Step 2 보여주기
         staffStep1.classList.add("hidden");
         staffStep2.classList.remove("hidden");
+
+        // [수정됨] 역할 선택(사장님/직원) 부분 숨기기
+        roleSection.classList.add("hidden");
     });
 
 
-    /* 5. 통합 유효성 검사 (입력할 때마다 버튼 활성화 체크) */
+    /* 5. 통합 유효성 검사 */
     function checkValidation() {
         // [사장님 검사]
         if (!ownerFields.classList.contains("hidden")) {
@@ -218,7 +219,6 @@
         }
     }
 
-    // 모든 입력 필드에 이벤트 걸기
     const allInputs = [ownerStore, ownerPhone, bizNumber, agree, staffStore, staffName, staffOwnerPhone];
     allInputs.forEach(el => {
         if(el) el.addEventListener("input", checkValidation);
@@ -226,11 +226,10 @@
     if(agree) agree.addEventListener("change", checkValidation);
 
 
-    /* 6. 제출 로직 (공통) */
+    /* 6. 제출 로직 */
     form.addEventListener("submit", (e) => {
       e.preventDefault(); 
       
-      // 현재 눌린 버튼 찾기 (UX용)
       const activeBtn = !ownerFields.classList.contains("hidden") ? ownerSubmitBtn : staffSubmitBtn;
       
       activeBtn.disabled = true;
