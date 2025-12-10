@@ -1,15 +1,88 @@
-<div class="min-h-screen bg-white flex flex-col px-6 pt-10">
+<div class="w-full h-full flex flex-col items-center justify-start bg-[#F0F7FF] px-6 pt-10 font-sans relative overflow-hidden md:justify-center md:pt-0">
+  
+  <div class="absolute top-0 left-0 w-full h-[40vh] bg-gradient-to-b from-blue-100 to-transparent z-0 pointer-events-none"></div>
 
-  <!-- 헤더 영역 -->
-  <div class="w-full flex flex-col items-center mb-10">
-    <img src="../logo.png" class="w-28 mb-4" />
-    <h1 class="text-2xl font-bold text-[#ff7949]">C 버전 안내</h1>
-    <p class="text-gray-600 mt-2 text-center">사장님 확인 절차가 필요합니다.</p>
+  <div class="relative z-10 mb-6 animate-pulse">
+    <span class="bg-[#1E40AF] text-white px-4 py-2 rounded-full text-[13px] font-bold shadow-md flex items-center gap-2 tracking-wide">
+      💌 새로운 고객 요청 도착!
+    </span>
   </div>
 
-  <!-- QR 영역 -->
-  <div class="w-full flex justify-center">
-    <img src="{{QR_SRC}}" class="w-64 h-64 shadow-xl rounded-2xl" />
+  <div class="relative z-10 text-center mb-8 w-full max-w-[320px]">
+    <h1 class="text-[26px] font-extrabold text-[#132d48] leading-tight mb-4 tracking-tight break-keep">
+      우리 동네 손님들이<br>
+      <span class="relative z-10 inline-block">
+        <span class="relative z-10 text-blue-700">사장님 매장</span>
+        <span class="absolute left-0 bottom-1 w-full h-3 bg-blue-200/60 -z-10 skew-x-[-10deg]"></span>
+      </span>을 찾고 있어요
+    </h1>
+    <p class="text-[#475569] text-[15px] leading-snug break-keep font-medium">
+      앱에 가게가 없어서 불편하다는<br>
+      단골분들의 문의가 폭주하고 있어요.
+    </p>
   </div>
 
+  <div class="relative z-10 flex flex-col gap-4 w-full max-w-[310px] mb-10">
+    <div class="self-start relative max-w-[85%] animate-[fadeIn_0.5s_ease-out_forwards]">
+      <div class="bg-white border-2 border-blue-100 rounded-2xl rounded-tl-sm p-4 shadow-sm relative z-10">
+         <p class="text-[#132d48] text-[14px] font-bold leading-snug">
+           "사장님네 커피 진짜 맛있는데 배달 안 되나요? 맨날 검색해요 ㅠㅠ"
+         </p>
+         <div class="flex items-center justify-end gap-1 mt-2">
+           <span class="text-[10px] text-blue-400">20대 여성 단골손님</span>
+           <span class="text-[10px] text-gray-300">Is ago</span>
+         </div>
+      </div>
+      <div class="absolute top-0 left-0 -ml-[9px] mt-3 w-4 h-4 bg-white border-l-2 border-b-2 border-blue-100 transform rotate-45 z-0"></div>
+    </div>
+
+    <div class="self-end relative max-w-[85%] animate-[fadeIn_0.5s_ease-out_0.2s_forwards] opacity-0">
+      <div class="bg-[#2563EB] border-2 border-[#2563EB] rounded-2xl rounded-tr-sm p-4 shadow-md relative z-10">
+         <p class="text-white text-[14px] font-bold leading-snug text-right">
+           "사장님 제발 패스오더 입점해주세요! 현기증 난단 말이에요..."
+         </p>
+         <div class="flex items-center justify-start gap-1 mt-2">
+           <span class="text-[10px] text-blue-200/70">Is ago</span>
+           <span class="text-[10px] text-blue-100">30대 직장인 고객님</span>
+         </div>
+      </div>
+       <div class="absolute top-0 right-0 -mr-[9px] mt-3 w-4 h-4 bg-[#2563EB] border-r-2 border-t-2 border-[#2563EB] transform rotate-45 z-0"></div>
+    </div>
+  </div>
+
+  <div class="relative z-10 group mb-4">
+    <div class="absolute -inset-2 bg-gradient-to-tr from-blue-300 via-indigo-300 to-blue-300 rounded-[40px] blur opacity-40 group-hover:opacity-60 transition duration-300"></div>
+    
+    <div class="relative bg-white p-2 rounded-[32px] border-[3px] border-blue-100 shadow-[0_10px_30px_-10px_rgba(37,99,235,0.3)]">
+      <div class="border-2 border-dashed border-blue-200 rounded-[26px] p-3 bg-blue-50/30 flex items-center justify-center">
+         
+         <img src="{{QR_SRC}}" class="w-[50vw] max-w-[200px] h-[50vw] max-h-[200px] object-contain rounded-xl mix-blend-multiply" alt="QR Code" />
+         
+      </div>
+      
+      <div class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 w-max z-20">
+        <div class="bg-[#132d48] text-white pl-6 pr-5 py-3 rounded-full text-[13px] font-bold shadow-xl flex items-center gap-2 hover:scale-105 transition-transform cursor-pointer ring-4 ring-white">
+          <span>요청 수락하고 고객 만나기</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-10 text-center mt-8">
+    <p class="text-[#132d48] font-bold text-[16px] mb-2">
+      사장님 휴대폰으로 확인해주세요
+    </p>
+    <div class="inline-flex items-center gap-2 bg-blue-100/80 px-4 py-1.5 rounded-full">
+      <span class="relative flex h-2.5 w-2.5">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
+      </span>
+      <p class="text-blue-800 text-[12px] font-bold">
+        현재 <span class="font-extrabold text-blue-600 underline decoration-2">50명 이상</span>이 대기 중입니다.
+      </p>
+    </div>
+  </div>
+
+  <div class="absolute bottom-2 right-2 text-[9px] text-gray-300 opacity-50">Type: C (Fans)</div>
 </div>
