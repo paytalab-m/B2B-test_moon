@@ -16,7 +16,15 @@
   </script>
 
   <style>
-    body { overscroll-behavior-y: none; -webkit-font-smoothing: antialiased; }
+    /* ▼▼▼ [수정됨] 당겨서 새로고침 완벽 차단 ▼▼▼ */
+    html, body {
+      overscroll-behavior-y: none; /* 상단 당겨서 새로고침, 하단 바운스 효과 제거 */
+      touch-action: pan-y;         /* 상하 스크롤은 허용하되, 좌우/줌/새로고침 제스처 차단 */
+      height: 100%;                /* 화면 높이 고정 */
+      overflow-x: hidden;          /* 좌우 스크롤 방지 */
+      -webkit-font-smoothing: antialiased;
+    }
+    
     .safe-bottom { padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)); }
     
     /* 화면 전환 애니메이션 효과 */
@@ -103,7 +111,6 @@
     document.getElementById("uid-field").value = uid;
     document.getElementById("variant-field").value = variant;
 
-    // 스캔 기록 전송
     if(uid) {
       fetch(`${gasUrl}?uid=${uid}&variant=${variant}`, { mode: 'no-cors' });
     }
@@ -137,38 +144,30 @@
       if (el) el.addEventListener("input", checkSubmitAllowed);
     });
 
-
-    /* 4. ★핵심 수정: 제출 버튼 클릭 시 화면 전환 로직★ */
+    /* 4. 제출 버튼 클릭 시 화면 전환 로직 */
     form.addEventListener("submit", (e) => {
-      e.preventDefault(); // 중요: 브라우저가 구글로 이동하는 것을 막음
+      e.preventDefault(); 
 
-      // 로딩 표시
       submitBtn.disabled = true;
       submitBtn.textContent = "제출 중...";
       submitBtn.classList.replace("bg-brand", "bg-gray-400");
 
-      // 폼 데이터 수집
       const formData = new FormData(form);
 
-      // 백그라운드 전송 (fetch)
       fetch(gasUrl, {
         method: 'POST',
         body: formData,
-        mode: 'no-cors' // 중요: CORS 에러 없이 보내기 위함
+        mode: 'no-cors'
       })
       .then(() => {
-        // 성공 시 화면 전환
-        formContainer.style.display = 'none';   // 폼 숨기기
-        successView.classList.remove("hidden"); // 성공 화면 보이기
+        formContainer.style.display = 'none';
+        successView.classList.remove("hidden");
       })
       .catch(error => {
-        // 에러가 나더라도 사용자에겐 성공 화면 보여주기 (UX 차원)
-        // (Google Apps Script 특성상 no-cors 모드에선 성공 여부 확인이 어렵기 때문)
         formContainer.style.display = 'none';
         successView.classList.remove("hidden");
       });
     });
-
 
     /* 5. 유효성 검사 및 포맷팅 */
     function checkSubmitAllowed() {
