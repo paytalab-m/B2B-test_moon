@@ -1,78 +1,109 @@
-<div class="w-full h-full flex flex-col items-center justify-center bg-[#F0F7FF] px-6 font-sans relative overflow-hidden">
-  
-  <div class="absolute top-0 left-0 w-full h-[40vh] bg-gradient-to-b from-blue-100 to-transparent z-0 pointer-events-none"></div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 기본 앱 스타일 리셋 */
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      background-color: #F0F9FF; /* 연한 블루 배경 */
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: none;
+    }
 
-  <div class="relative z-10 mb-6 animate-pulse">
-    <span class="bg-[#1E40AF] text-white px-4 py-2 rounded-full text-[13px] font-bold shadow-md flex items-center gap-2 tracking-wide">
-      💌 새로운 고객 요청 도착!
-    </span>
-  </div>
+    /* 반응형 스케일링 */
+    .responsive-card {
+      transform-origin: center center;
+      transition: transform 0.2s ease-out;
+    }
+    /* 작은 폰 대응 */
+    @media (max-height: 750px) { .responsive-card { transform: scale(0.95); } }
+    @media (max-height: 650px) { .responsive-card { transform: scale(0.90); } }
+  </style>
+</head>
+<body>
 
-  <div class="relative z-10 text-center mb-8 w-full max-w-[320px]">
-    <h1 class="text-[26px] font-extrabold text-[#132d48] leading-tight mb-4 tracking-tight break-keep">
-      우리 동네 손님들이<br>
-      <span class="relative inline-block">
-        <span class="relative z-10 text-blue-700">사장님 매장</span>
-        <span class="absolute left-0 bottom-1 w-full h-3 bg-blue-200/60 -z-10 skew-x-[-10deg]"></span>
-      </span>을 찾고 있어요
-    </h1>
-    <p class="text-[#475569] text-[15px] leading-snug break-keep font-medium">
-      앱에 가게가 없어서 불편하다는<br>
-      단골분들의 문의가 접수되었습니다.
-    </p>
-  </div>
+  <div class="fixed inset-0 w-full h-full flex flex-col items-center justify-center bg-[#F0F9FF]">
 
-  <div class="relative z-10 flex flex-col gap-3 w-full max-w-[310px] mb-8">
-    <div class="self-start relative max-w-[90%]">
-      <div class="bg-white border border-blue-100 rounded-2xl rounded-tl-none p-3 shadow-sm relative z-10">
-         <p class="text-[#132d48] text-[13px] font-bold leading-snug">
-           "사장님네 커피 진짜 맛있는데 배달 안 되나요? 맨날 검색해요 ㅠㅠ"
-         </p>
-         <div class="flex items-center justify-end gap-1 mt-1">
-           <span class="text-[10px] text-blue-400">20대 여성 단골손님</span>
-         </div>
-      </div>
-    </div>
+    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 z-50"></div>
 
-    <div class="self-end relative max-w-[90%]">
-      <div class="bg-[#2563EB] border border-[#2563EB] rounded-2xl rounded-tr-none p-3 shadow-md relative z-10">
-         <p class="text-white text-[13px] font-bold leading-snug text-right">
-           "사장님 제발 패스오더 입점해주세요! 현기증 난단 말이에요..."
-         </p>
-         <div class="flex items-center justify-start gap-1 mt-1">
-           <span class="text-[10px] text-blue-100">30대 직장인 고객님</span>
-         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="relative z-10 group mb-6">
-    <div class="absolute -inset-1 bg-gradient-to-tr from-blue-300 via-indigo-300 to-blue-300 rounded-[35px] blur opacity-30"></div>
-    
-    <div class="relative bg-white p-2 rounded-[30px] border-2 border-blue-100 shadow-xl">
-      <div class="border border-dashed border-blue-200 rounded-[24px] p-2 bg-blue-50/30 flex items-center justify-center">
-         
-         <img src="{{QR_SRC}}" class="w-[50vw] max-w-[200px] h-[50vw] max-h-[200px] object-contain rounded-lg mix-blend-multiply" alt="QR Code" />
-         
-      </div>
+    <div class="responsive-card w-[94%] max-w-[420px] relative z-10">
       
-      <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-max z-20">
-        <div class="bg-[#132d48] text-white pl-5 pr-4 py-2 rounded-full text-[12px] font-bold shadow-xl flex items-center gap-2 ring-4 ring-white">
-          <span>요청 수락하고 고객 만나기 ▶</span>
+      <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-5 pt-10 w-full flex flex-col items-center relative">
+        
+        <div class="absolute -top-5 left-0 right-0 flex justify-center z-20 animate-bounce">
+          <span class="inline-block bg-[#1E40AF] text-white px-4 py-1.5 rounded-full text-[12px] font-bold shadow-md tracking-wide whitespace-nowrap border-[3px] border-[#F0F9FF]">
+            💌 새로운 고객 요청 도착 💌
+          </span>
         </div>
+
+        <div class="text-center mb-6 mt-2 w-full">
+          <p class="text-[#475569] text-[15px] font-bold mb-1 leading-tight">
+            우리 동네 손님들이
+          </p>
+          <h1 class="text-[22px] font-black text-[#1e3a8a] leading-snug tracking-tight break-keep">
+            <span class="text-[#2563EB] inline-block border-b-[4px] border-blue-200/80">사장님 매장</span>을 애타게 찾고 있어요
+          </h1>
+        </div>
+
+        <div class="w-full flex flex-col gap-4 mb-6 px-1">
+            
+            <div class="self-start relative max-w-[90%]">
+              <div class="bg-white border-2 border-blue-100 rounded-2xl rounded-tl-none p-3.5 shadow-sm relative z-10 text-left">
+                 <div class="flex items-center gap-1 mb-1">
+                    <span class="text-sm">🙋‍♀️</span>
+                    <p class="text-blue-400 text-[11px] font-bold">20대 여성 단골손님</p>
+                 </div>
+                 <p class="text-[#1e3a8a] text-[13px] font-bold leading-snug break-keep">
+                   "사장님네 커피 진짜 맛있는데 배달 안 되나요? ㅠㅠ 맨날 검색해요..."
+                 </p>
+              </div>
+              <div class="absolute top-0 left-0 -ml-[2px] mt-3 w-4 h-4 bg-white border-t-2 border-l-2 border-blue-100 transform -rotate-45 z-0"></div>
+            </div>
+
+            <div class="self-end relative max-w-[90%]">
+              <div class="bg-[#EFF6FF] border-2 border-blue-200 rounded-2xl rounded-tr-none p-3.5 shadow-md relative z-10 text-left">
+                 <div class="flex items-center justify-end gap-1 mb-1">
+                    <p class="text-blue-500 text-[11px] font-bold">30대 직장인 고객님</p>
+                    <span class="text-sm">💼</span>
+                 </div>
+                 <p class="text-[#1e3a8a] text-[13px] font-bold leading-snug break-keep">
+                   "제발 패스오더 입점해주세요! 현기증 난단 말이에요..."
+                 </p>
+              </div>
+               <div class="absolute top-0 right-0 -mr-[2px] mt-3 w-4 h-4 bg-[#EFF6FF] border-t-2 border-r-2 border-blue-200 transform rotate-45 z-0"></div>
+            </div>
+        </div>
+
+        <div class="relative w-full flex flex-col items-center gap-3 mb-5">
+           <div class="p-1 border border-gray-200 rounded-xl bg-white shadow-sm w-full max-w-[170px]">
+              <img src="{{QR_SRC}}" class="w-full h-auto object-contain rounded-lg" alt="QR Code" />
+           </div>
+           <div class="bg-[#1e3a8a] text-white px-6 py-3 rounded-full text-[13px] font-bold shadow-lg flex items-center gap-1 animate-[pulse_2s_infinite] cursor-pointer">
+              ▶ 요청 수락하고 고객 만나기
+           </div>
+        </div>
+
+        <div class="text-center">
+            <p class="text-blue-800/70 text-[12px] font-bold bg-blue-50 px-3 py-1 rounded-full inline-block">
+              현재 <span class="font-extrabold text-blue-600 underline">50명 이상</span>의 고객이 대기 중입니다.
+            </p>
+        </div>
+
       </div>
     </div>
-  </div>
 
-  <div class="relative z-10 text-center mt-4">
-    <div class="inline-flex items-center gap-2 bg-white/60 px-4 py-1.5 rounded-full border border-blue-100">
-      <span class="relative flex h-2.5 w-2.5">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
-      </span>
-      <p class="text-blue-800 text-[11px] font-bold">
-        현재 <span class="font-extrabold text-blue-600 underline">50명 이상</span>이 대기 중입니다.
-      </p>
-    </div>
+    <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 z-50"></div>
+
   </div>
-</div>
+  
+  <div class="absolute bottom-3 right-3 text-[9px] text-blue-300 opacity-50 z-0">Type: C (Chat-Bubbles)</div>
+</body>
+</html>
