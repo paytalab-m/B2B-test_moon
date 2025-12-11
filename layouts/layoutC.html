@@ -13,9 +13,10 @@
     
     /* 반응형 스케일링 */
     .responsive-card {
-      transform-origin: center center;
+      transform-origin: center top; /* 상단 기준 스케일링 */
       transition: transform 0.2s ease-out;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      display: flex; flex-direction: column; align-items: center; 
+      /* justify-start로 상단 배치 */
       height: 100%;
     }
     @media (max-height: 750px) { .responsive-card { transform: scale(0.95); } }
@@ -33,7 +34,7 @@
 </head>
 <body>
 
-  <div class="fixed inset-0 w-full h-full flex flex-col items-center justify-center bg-[#F0F9FF] overflow-hidden">
+  <div class="fixed inset-0 w-full h-full flex flex-col items-center justify-start pt-5 bg-[#F0F9FF] overflow-hidden">
 
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
         <div class="absolute top-[-10%] left-[-10%] w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
@@ -42,11 +43,11 @@
 
     <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 z-50"></div>
 
-    <div class="responsive-card w-[99%] max-w-[400px] relative z-10 py-2">
+    <div class="responsive-card w-[92%] max-w-[400px] relative z-10 py-2">
       
       <div class="w-full bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col relative z-20 h-auto max-h-full">
         
-        <div class="px-5 pt-1 pb-0 bg-white flex flex-col items-center relative z-10">
+        <div class="px-5 pt-4 pb-0 bg-white flex flex-col items-center relative z-10">
             
             <div class="mb-3 animate-bounce relative">
               <span class="bg-[#1E40AF] text-white px-5 py-2 rounded-full text-[13px] font-extrabold shadow-md flex items-center gap-2 border border-blue-100">
@@ -85,7 +86,7 @@
 
         </div>
 
-        <div class="px-5 pt-4 pb-6 bg-[#F1F5F9] flex flex-col items-center gap-3 relative z-0 flex-grow justify-center">
+        <div class="px-5 pt-4 pb-8 bg-[#F1F5F9] flex flex-col items-center gap-3 relative z-0 flex-grow justify-center">
             
             <div class="bg-white p-2 rounded-2xl shadow-sm border border-gray-200 w-full max-w-[180px]">
                <div class="border border-dashed border-gray-200 rounded-xl p-1">
@@ -118,6 +119,6 @@
 
   </div>
   
-  <div class="absolute bottom-3 right-3 text-[9px] text-blue-300 opacity-50 z-0">Type: C (Max-Space)</div>
+  <div class="absolute bottom-3 right-3 text-[9px] text-blue-300 opacity-50 z-0">Type: C (Final-Updated)</div>
 </body>
 </html>
