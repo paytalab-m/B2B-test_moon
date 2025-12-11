@@ -5,24 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* 기본 앱 스타일 리셋 */
     html, body {
       width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0;
       background-color: #F8FAFC; user-select: none; touch-action: none;
     }
-    
-    /* 반응형 스케일링 */
     .responsive-card {
-      transform-origin: center top; /* 상단 기준 스케일링 */
+      transform-origin: center top; 
       transition: transform 0.2s ease-out;
       display: flex; flex-direction: column; align-items: center; 
-      /* justify-start로 상단 배치 */
       height: 100%;
     }
     @media (max-height: 750px) { .responsive-card { transform: scale(0.95); } }
     @media (max-height: 650px) { .responsive-card { transform: scale(0.90); } }
 
-    /* 반짝임(Shimmer) 애니메이션 */
     @keyframes shimmer-move {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
@@ -43,7 +38,7 @@
 
     <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 z-50"></div>
 
-    <div class="responsive-card w-[100%] max-w-[400px] relative z-10 py-2">
+    <div class="responsive-card w-[98%] max-w-[400px] relative z-10 py-2">
       
       <div class="w-full bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col relative z-20 h-auto max-h-full">
         
@@ -86,7 +81,7 @@
 
         </div>
 
-        <div class="px-5 pt-4 pb-8 bg-[#F1F5F9] flex flex-col items-center gap-3 relative z-0 flex-grow justify-center">
+        <div class="px-5 pt-4 pb-20 bg-[#F1F5F9] flex flex-col items-center gap-3 relative z-0 flex-grow justify-center">
             
             <div class="bg-white p-2 rounded-2xl shadow-sm border border-gray-200 w-full max-w-[180px]">
                <div class="border border-dashed border-gray-200 rounded-xl p-1">
@@ -119,6 +114,6 @@
 
   </div>
   
-  <div class="absolute bottom-3 right-3 text-[9px] text-blue-300 opacity-50 z-0">Type: C (Final-Updated)</div>
+  <div class="absolute bottom-3 right-3 text-[9px] text-blue-300 opacity-50 z-0">Type: C (98%-Width)</div>
 </body>
 </html>
