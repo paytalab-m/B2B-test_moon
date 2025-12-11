@@ -1,5 +1,24 @@
-<div class="w-full h-full flex flex-col items-center justify-center bg-[#FFFAEB] px-6 font-sans relative overflow-hidden">
-  
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 화면 튕김(Rubber-band) 및 스크롤 완벽 차단 */
+    html, body {
+      overscroll-behavior: none; /* 맥/iOS 튕김 방지 */
+      touch-action: none;        /* 터치 제스처 무시 (줌/스크롤 차단) */
+      overflow: hidden;          /* 스크롤바 생성 방지 */
+      height: 100%;              /* 높이 고정 */
+      width: 100%;               /* 너비 고정 */
+      -webkit-user-select: none; /* 텍스트 선택 방지 (앱 느낌) */
+      user-select: none;
+    }
+  </style>
+</head>
+<body class="bg-[#FFFAEB] flex flex-col items-center justify-center px-6 font-sans relative">
+
   <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 z-50"></div>
 
   <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-6 w-full max-w-[360px] flex flex-col items-center relative z-10">
@@ -56,7 +75,6 @@
       <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200 flex-shrink-0">
         <span class="text-[20px]">🙋‍♂️</span>
       </div>
-      
       <div class="relative bg-gray-100 text-[#374151] p-3.5 rounded-2xl rounded-tl-none text-[12px] leading-snug font-medium break-keep shadow-sm">
         <p>
           "사장님, <span class="text-[#D97706] font-bold bg-orange-100 px-1 rounded">무료체험권</span>으로 꼭 패스오더 도입해주세요!<br>
@@ -67,5 +85,8 @@
 
   </div>
   
-  <div class="absolute bottom-2 right-2 text-[9px] text-gray-300 opacity-50">Type: B (Final Fixed)</div>
-</div>
+  <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 z-50"></div>
+
+  <div class="absolute bottom-3 right-2 text-[9px] text-gray-300 opacity-50">Type: B (Locked)</div>
+</body>
+</html>
