@@ -15,8 +15,12 @@
       display: flex; flex-direction: column; align-items: center; 
       height: 100%;
     }
-    @media (max-height: 750px) { .responsive-card { transform: scale(0.95); } }
-    @media (max-height: 650px) { .responsive-card { transform: scale(0.90); } }
+    /* 800px부터 축소 시작 (갤럭시 S20 등 대응) */
+    @media (max-height: 800px) { .responsive-card { transform: scale(0.95); } }
+    /* 700px 이하일 때 더 많이 축소 */
+    @media (max-height: 700px) { .responsive-card { transform: scale(0.88); } }
+    /* 600px 이하 (아이폰SE 등) 초소형 대응 추가 */
+    @media (max-height: 600px) { .responsive-card { transform: scale(0.82); } }
 
     @keyframes shimmer-move {
       0% { transform: translateX(-100%); }
