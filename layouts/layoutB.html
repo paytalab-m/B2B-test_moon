@@ -23,14 +23,8 @@
       transform-origin: center center;
       transition: transform 0.2s ease-out;
     }
-
-    /* 키가 작은 폰 대응 */
-    @media (max-height: 750px) {
-      .responsive-card { transform: scale(0.95); }
-    }
-    @media (max-height: 650px) {
-      .responsive-card { transform: scale(0.90); }
-    }
+    @media (max-height: 750px) { .responsive-card { transform: scale(0.95); } }
+    @media (max-height: 650px) { .responsive-card { transform: scale(0.90); } }
   </style>
 </head>
 <body>
@@ -41,10 +35,10 @@
 
     <div class="responsive-card w-[97%] max-w-[420px] relative z-10">
       
-      <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-5 pt-8 w-full flex flex-col items-center relative">
+      <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-5 pt-10 w-full flex flex-col items-center relative">
         
-        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 animate-bounce z-20 w-full text-center">
-          <span class="inline-block bg-[#92400E] text-white px-4 py-1.5 rounded-full text-[12px] font-bold shadow-md tracking-wide whitespace-nowrap">
+        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+          <span class="inline-block bg-[#92400E] text-white px-4 py-1.5 rounded-full text-[12px] font-bold shadow-md tracking-wide whitespace-nowrap border-2 border-white">
             🎁 선착순 한정 혜택 🎁
           </span>
         </div>
@@ -109,7 +103,7 @@
     <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 z-50"></div>
 
   </div>
-
-  <div class="absolute bottom-3 right-3 text-[9px] text-gray-400 opacity-30 z-0">Type: B (Wide-Center)</div>
+  
+  <div class="absolute bottom-3 right-3 text-[9px] text-gray-400 opacity-30 z-0">Type: B (Center-Fixed)</div>
 </body>
 </html>
