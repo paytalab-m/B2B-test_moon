@@ -17,7 +17,7 @@
       transition: transform 0.2s ease-out;
       width: 100%;
       display: flex; flex-direction: column; align-items: center;
-      /* 배너 높이만큼 상단 패딩 추가 (줄임: 5rem -> 4rem) */
+      /* 배너 높이 고려하여 상단 패딩 설정 */
       padding-top: 4rem; 
     }
     
@@ -39,7 +39,7 @@
 
   <div class="fixed top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 z-50"></div>
 
-  <div class="fixed top-1.5 left-0 w-full bg-white z-40 py-2 px-6 flex items-center justify-center gap-3">
+  <div class="fixed top-1.5 left-0 w-full bg-white z-40 py-2 px-6 flex items-center justify-center gap-3 border-b border-blue-50 shadow-sm">
       
       <div class="relative flex-shrink-0">
           <div class="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center border-2 border-white shadow-sm">
@@ -57,8 +57,6 @@
               우리 동네 카페 서포터즈가 전달 드려요
            </span>
       </div>
-      
-      <div class="absolute bottom-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
   </div>
   <div class="fixed inset-0 w-full h-[100dvh] flex flex-col items-center justify-start bg-[#F0F9FF] overflow-hidden">
 
@@ -71,10 +69,10 @@
       
       <div class="w-full max-w-[400px] bg-white rounded-3xl shadow-xl flex flex-col relative z-20 h-auto max-h-full overflow-hidden">
         
-        <div class="px-5 pt-5 pb-0 bg-white flex flex-col items-center relative z-10 rounded-t-3xl">
+        <div class="px-5 pt-4 pb-0 bg-white flex flex-col items-center relative z-10 rounded-t-3xl">
             
-            <div class="text-center mb-3 w-full mx-auto">
-               <span class="text-[32px]">💌</span>
+            <div class="text-center mb-1 w-full mx-auto">
+               <span class="text-[32px] leading-none block">💌</span>
             </div>
 
             <div class="text-center mb-3 w-full">
@@ -141,6 +139,6 @@
 
   </div>
   
-  <div class="absolute bottom-3 right-3 text-[9px] text-blue-300 opacity-50 z-0">Type: C (Full-Width-Banner-BlueLine)</div>
+  <div class="absolute bottom-3 right-3 text-[9px] text-blue-300 opacity-50 z-0">Type: C (Compact-Spacing)</div>
 </body>
 </html>
