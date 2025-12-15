@@ -20,12 +20,14 @@
 
     /* 2. 반응형 스케일링 */
     .responsive-content {
-      transform-origin: center center;
+      transform-origin: center top; /* 상단 기준 스케일링으로 변경 */
       transition: transform 0.2s ease-out;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
+      /* 배너 높이만큼 상단 패딩 추가 */
+      padding-top: 6rem; 
     }
 
     /* 키가 작은 폰 (높이 750px 이하) */
@@ -34,40 +36,38 @@
     }
     /* 키가 매우 작은 폰 (높이 650px 이하) */
     @media (max-height: 650px) {
-      .responsive-content { transform: scale(0.85); }
+      /* 스케일링 시 상단 여백 보정 */
+      .responsive-content { transform: scale(0.85) translateY(-2rem); }
     }
   </style>
 </head>
 <body>
 
-  <div class="fixed inset-0 w-full h-full flex flex-col items-center justify-center bg-[#FEF2F2]">
+  <div class="fixed inset-0 w-full h-full flex flex-col items-center justify-start bg-[#FEF2F2]">
 
     <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 via-red-600 to-red-500 z-50"></div>
 
-    <div class="responsive-content px-6 relative z-10">
-      
-      <div class="mb-1 mt-2 flex justify-center w-full">
-        <div class="bg-white pl-1.5 pr-4 py-1.5 rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.08)] flex items-center gap-2.5 border border-red-100 max-w-full">
-            
-            <div class="relative flex-shrink-0">
-                <div class="w-9 h-9 rounded-full bg-[#10B981] flex items-center justify-center border-2 border-white shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-white">
-                        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
-                    </svg>
-                </div>
+    <div class="absolute top-2 left-0 w-full bg-white border-b border-red-100 shadow-[0_2px_8px_rgba(0,0,0,0.05)] z-40 py-3 px-6 flex items-center justify-center gap-3">
+        
+        <div class="relative flex-shrink-0">
+            <div class="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center border-2 border-white shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-white">
+                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                </svg>
             </div>
-
-            <div class="flex flex-col items-start justify-center">
-                 <span class="text-[10px] font-bold text-[#059669] leading-none mb-0.5 tracking-tight">
-                    패스오더 공식 인증 완료
-                 </span>
-                 <span class="text-[#1e293b] text-[13px] font-extrabold tracking-tight leading-none">
-                    우리 동네 카페 서포터즈가 전달 드려요
-                 </span>
-            </div>
-
         </div>
-      </div>
+
+        <div class="flex flex-col items-start justify-center">
+             <span class="text-[11px] font-bold text-[#059669] leading-none mb-0.5 tracking-tight">
+                패스오더 공식 인증 완료
+             </span>
+             <span class="text-[#1e293b] text-[14px] font-extrabold tracking-tight leading-none">
+                우리 동네 카페 서포터즈가 전달 드려요
+             </span>
+        </div>
+    </div>
+    <div class="responsive-content px-6 relative z-10 pb-10">
+      
       <div class="text-center mb-6 w-full max-w-[340px]">
         <div class="border-b-2 border-red-100 pb-3 mb-4 mx-auto w-fit px-4">
           <h1 class="text-[26px] font-black text-[#132d48] leading-relaxed tracking-tight">
@@ -134,6 +134,6 @@
 
   </div>
 
-  <div class="absolute bottom-3 right-3 text-[9px] text-gray-400 opacity-50 z-0">Type: A (Slim-Wide-Tight)</div>
+  <div class="absolute bottom-3 right-3 text-[9px] text-gray-400 opacity-50 z-0">Type: A (Full-Width-Banner)</div>
 </body>
 </html>
