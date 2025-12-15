@@ -36,7 +36,7 @@
 </head>
 <body>
 
-  <div class="fixed inset-0 w-full h-[100dvh] flex flex-col items-center justify-start pt-12 bg-[#F0F9FF] overflow-hidden">
+  <div class="fixed inset-0 w-full h-[100dvh] flex flex-col items-center justify-start pt-28 bg-[#F0F9FF] overflow-hidden">
 
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
         <div class="absolute top-[-10%] left-[-10%] w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
@@ -45,32 +45,29 @@
 
     <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 z-50"></div>
 
+    <div class="absolute top-1.5 left-0 w-full bg-white border-b border-blue-100 shadow-[0_2px_8px_rgba(0,0,0,0.05)] z-40 py-3 px-6 flex items-center justify-center gap-3">
+        
+        <div class="relative flex-shrink-0">
+            <div class="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center border-2 border-white shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-white">
+                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-start justify-center">
+             <span class="text-[11px] font-bold text-[#059669] leading-none mb-0.5 tracking-tight">
+                패스오더 공식 인증 완료
+             </span>
+             <span class="text-[#1e293b] text-[14px] font-extrabold tracking-tight leading-none">
+                우리 동네 카페 서포터즈가 전달 드려요
+             </span>
+        </div>
+    </div>
     <div class="responsive-card w-[98%] max-w-[400px] relative z-10 py-2">
       
       <div class="w-full bg-white rounded-3xl shadow-xl flex flex-col relative z-20 h-auto max-h-full">
         
-        <div class="absolute -top-5 left-0 right-0 flex justify-center z-30">
-          <div class="bg-white w-[90%] max-w-[340px] pl-1.5 pr-4 py-1.5 rounded-full shadow-md flex items-center gap-2.5 border border-blue-100 justify-center relative">
-              
-              <div class="relative flex-shrink-0">
-                  <div class="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center border-2 border-white shadow-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-white">
-                          <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
-                      </svg>
-                  </div>
-              </div>
-
-              <div class="flex flex-col items-start justify-center">
-                   <span class="text-[10px] font-bold text-[#059669] leading-none mb-0.5 tracking-tight">
-                      패스오더 공식 인증 완료
-                   </span>
-                   <span class="text-[#1e293b] text-[13px] font-extrabold tracking-tight leading-none">
-                      우리 동네 카페 서포터즈가 전달 드려요
-                   </span>
-              </div>
-
-          </div>
-        </div>
         <div class="px-5 pt-8 pb-0 bg-white flex flex-col items-center relative z-10 rounded-t-3xl">
             
             <div class="text-center mb-3 w-full">
@@ -106,37 +103,4 @@
 
         <div class="px-5 pt-4 pb-8 bg-[#F1F5F9] flex flex-col items-center gap-3 relative z-0 flex-grow justify-center rounded-b-3xl">
             
-            <div class="bg-white p-2 rounded-2xl shadow-sm border border-gray-200 w-full max-w-[180px]">
-               <div class="border border-dashed border-gray-200 rounded-xl p-1">
-                  <img src="{{QR_SRC}}" class="w-full h-auto object-contain rounded-lg" alt="QR Code" />
-               </div>
-            </div>
-            
-            <div class="w-full max-w-[240px]">
-               <div class="bg-[#1e3a8a] text-white py-2 rounded-full text-[14px] font-bold shadow-md flex justify-center items-center gap-1 w-full">
-                  ▲ 모든 고객 요청 확인하기 ▲
-               </div>
-            </div>
-
-            <div class="w-full text-center relative z-10">
-              <div class="inline-block relative overflow-hidden bg-white border border-blue-200 px-4 py-3 rounded-xl shadow-sm animate-pulse">
-                  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-blue-50/80 to-transparent w-full h-full -translate-x-full animate-shimmer-bar"></div>
-                  <p class="text-[#1e3a8a] text-[14px] font-bold leading-snug relative z-10">
-                    <span class="text-blue-600 text-[18px] font-black underline decoration-2 underline-offset-2">14명</span>의 고객이 패스오더 오픈을 기다려요! ✨
-                  </p>
-              </div>
-            </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="absolute bottom-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 z-50"></div>
-
-  </div>
-  
-  <div class="absolute bottom-3 right-3 text-[9px] text-blue-300 opacity-50 z-0">Type: C (White-Badge-Applied)</div>
-</body>
-</html>
+            <div class="bg
