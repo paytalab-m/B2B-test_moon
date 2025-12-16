@@ -22,10 +22,10 @@
       animation: heartbeat 1.5s ease-in-out infinite;
     }
 
-    /* 3. 기본 설정 (Type B 기준: 스크롤 막음) */
+    /* 3. 기본 설정 */
     html, body {
       width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0;
-      background-color: #F0F9FF; /* 배경색은 파란색 테마 */
+      background-color: #F0F9FF;
       user-select: none; touch-action: none;
     }
     
@@ -37,7 +37,7 @@
     @media (max-height: 750px) { .responsive-card { transform: scale(0.95); } }
     @media (max-height: 650px) { .responsive-card { transform: scale(0.90); } }
     
-    /* 반짝임 애니메이션 (하단 텍스트 바) */
+    /* 반짝임 애니메이션 */
     @keyframes shimmer-move {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
@@ -82,11 +82,11 @@
         </div>
 
         <div class="text-center mb-1 w-full mt-2">
-           <span class="text-[32px] leading-none block">💌</span>
+           <span class="text-[24px] leading-none block">💌</span>
         </div>
 
         <div class="text-center mb-4 w-full">
-          <h1 class="text-[22px] font-black text-[#0F172A] leading-snug tracking-tight break-keep">
+          <h1 class="text-[20px] font-black text-[#0F172A] leading-snug tracking-tight break-keep">
             <span class="text-[#2563EB] inline-block border-b-[4px] border-blue-100">우리 동네 손님</span>들이<br>
             <span class="text-[#2563EB] inline-block border-b-[4px] border-blue-100">패스오더 도입</span>을 기다리고 있어요!
           </h1>
@@ -137,7 +137,6 @@
            <div class="w-full text-center">
              <div class="inline-block relative overflow-hidden bg-white border border-blue-200 px-4 py-2 rounded-xl shadow-sm">
                  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-blue-50/80 to-transparent w-full h-full -translate-x-full animate-shimmer-bar"></div>
-                 
                  <p style="font-family: 'LeeSeoyun', sans-serif;" class="text-[#1e3a8a] text-[15px] font-bold leading-snug relative z-10">
                    <span class="text-blue-600 text-[18px] font-black underline decoration-2 underline-offset-2">14명</span>의 고객이 패스오더 오픈을 기다려요! ✨
                  </p>
