@@ -5,23 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* 1. 기본 설정 (Type B 기준: 스크롤 막음) */
+    /* 1. 이서윤체 폰트 불러오기 (눈누 CDN) */
+    @font-face {
+        font-family: 'LeeSeoyun';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/LeeSeoyun.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    /* 2. 심장 박동(Heartbeat) 애니메이션 */
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+    }
+    .animate-heartbeat {
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+
+    /* 3. 기본 설정 (Type B 기준: 스크롤 막음) */
     html, body {
       width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0;
       background-color: #F0F9FF; /* 배경색은 파란색 테마 */
       user-select: none; touch-action: none;
     }
     
-    /* 2. 반응형 스케일링 (Type B 기준: 화면 작으면 자동 축소) */
+    /* 4. 반응형 스케일링 */
     .responsive-card {
       transform-origin: center center;
       transition: transform 0.2s ease-out;
     }
-    /* 키가 작은 폰 대응 */
     @media (max-height: 750px) { .responsive-card { transform: scale(0.95); } }
     @media (max-height: 650px) { .responsive-card { transform: scale(0.90); } }
     
-    /* 반짝임 애니메이션 */
+    /* 반짝임 애니메이션 (하단 텍스트 바) */
     @keyframes shimmer-move {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
@@ -47,11 +63,13 @@
         
         <div class="absolute -top-5 left-0 right-0 flex justify-center z-20">
           <div class="bg-white pl-1.5 pr-4 py-1.5 rounded-full shadow-md flex items-center gap-2.5 border border-blue-100 justify-center">
-              <div class="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center border-2 border-white shadow-sm flex-shrink-0">
+              
+              <div class="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center border-2 border-white shadow-sm flex-shrink-0 animate-heartbeat">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-white">
                       <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
                   </svg>
               </div>
+              
               <div class="flex flex-col items-start justify-center">
                    <span class="text-[10px] font-bold text-[#059669] leading-none mb-0.5 tracking-tight">
                       패스오더 공식 인증 완료
@@ -79,8 +97,10 @@
               <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center border border-white shadow-sm flex-shrink-0">
                   <span class="text-[16px]">👩</span>
               </div>
-              <div class="bg-white p-3.5 rounded-2xl rounded-bl-none border border-gray-100 text-[#334155] text-[13px] font-bold leading-snug shadow-sm">
-                 <p>사장님, 여기는 언제 패스오더 되나요?<br>패스오더로 편하게 주문하고 싶어요!</p>
+              <div class="bg-white p-3.5 rounded-2xl rounded-bl-none border border-gray-100 text-[#334155] shadow-sm">
+                 <p style="font-family: 'LeeSeoyun', sans-serif;" class="text-[16px] font-bold leading-snug">
+                   사장님, 여기는 언제 패스오더 되나요?<br>패스오더로 편하게 주문하고 싶어요!
+                 </p>
               </div>
             </div>
 
@@ -88,21 +108,28 @@
               <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center border border-white shadow-sm flex-shrink-0">
                   <span class="text-[16px]">👨‍💼</span>
               </div>
-              <div class="bg-[#EFF6FF] p-3.5 rounded-2xl rounded-br-none border border-blue-100 text-[#1E40AF] text-[13px] font-bold leading-snug text-right shadow-sm">
-                 <p>패스오더 안 돼서 옆 가게 간 적 있어요..<br>여기도 패스오더 해주세요!</p>
+              <div class="bg-[#EFF6FF] p-3.5 rounded-2xl rounded-br-none border border-blue-100 text-[#1E40AF] text-right shadow-sm">
+                 <p style="font-family: 'LeeSeoyun', sans-serif;" class="text-[16px] font-bold leading-snug">
+                   패스오더 안 돼서 옆 가게 간 적 있어요..<br>여기도 패스오더 해주세요!
+                 </p>
               </div>
             </div>
         </div>
 
         <div class="w-full flex flex-col items-center gap-3">
-           <div class="bg-white p-2 rounded-xl shadow-sm border border-gray-200 w-full max-w-[160px]">
-              <div class="border border-dashed border-gray-200 rounded-lg p-1">
-                 <img src="{{QR_SRC}}" class="w-full h-auto object-contain rounded-lg" alt="QR Code" />
+           
+           <div class="relative group w-full max-w-[160px]">
+              <div class="absolute -inset-1 bg-gradient-to-r from-blue-400 via-indigo-300 to-blue-400 rounded-[20px] blur-md opacity-30 animate-pulse"></div>
+              
+              <div class="relative bg-white p-2 rounded-xl shadow-sm border border-gray-200">
+                 <div class="border border-dashed border-gray-200 rounded-lg p-1">
+                    <img src="{{QR_SRC}}" class="w-full h-auto object-contain rounded-lg" alt="QR Code" />
+                 </div>
               </div>
            </div>
            
            <div class="w-full max-w-[240px]">
-              <div class="bg-[#1e3a8a] text-white py-2.5 rounded-full text-[14px] font-bold shadow-md flex justify-center items-center gap-1 w-full">
+              <div class="bg-[#1e3a8a] text-white py-2.5 rounded-full text-[14px] font-bold shadow-md flex justify-center items-center gap-1 w-full z-10 relative">
                  ▲ 모든 고객 요청 확인하기 ▲
               </div>
            </div>
@@ -110,8 +137,9 @@
            <div class="w-full text-center">
              <div class="inline-block relative overflow-hidden bg-white border border-blue-200 px-4 py-2 rounded-xl shadow-sm">
                  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-blue-50/80 to-transparent w-full h-full -translate-x-full animate-shimmer-bar"></div>
-                 <p class="text-[#1e3a8a] text-[13px] font-bold leading-snug relative z-10">
-                   <span class="text-blue-600 text-[16px] font-black underline decoration-2 underline-offset-2">14명</span>의 고객이 패스오더 오픈을 기다려요! ✨
+                 
+                 <p style="font-family: 'LeeSeoyun', sans-serif;" class="text-[#1e3a8a] text-[15px] font-bold leading-snug relative z-10">
+                   <span class="text-blue-600 text-[18px] font-black underline decoration-2 underline-offset-2">14명</span>의 고객이 패스오더 오픈을 기다려요! ✨
                  </p>
              </div>
            </div>
