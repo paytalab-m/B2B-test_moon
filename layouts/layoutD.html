@@ -1,318 +1,118 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>무빙 스트림 가이드</title>
-    <style>
-        /* [1. 레이아웃 & 배경] */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html {
-            width: 100%; height: 100%;
-            background-color: #121212;
-            font-family: -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
-            overflow: hidden; display: flex; flex-direction: column; color: #fff;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 1. 기본 앱 스타일 리셋 */
+    html, body {
+      width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0;
+      background-color: #FEF2F2; user-select: none; touch-action: none;
+    }
 
-        /* [2. 혜택 스트림 (초기엔 중앙, 나중에 상단)] */
-        .stream-layer {
-            position: absolute;
-            left: 0; width: 100%;
-            height: 160px; /* 초기 크기 */
-            display: flex; align-items: center;
-            background: linear-gradient(90deg, #1a1a1a, #222);
-            border-bottom: 1px solid #333;
-            z-index: 50;
-            
-            /* 초기 위치: 화면 중앙 */
-            top: 50%; transform: translateY(-50%) scale(1.2);
-            transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
+    /* 2. 반응형 스케일링 */
+    .responsive-content {
+      transform-origin: center top;
+      transition: transform 0.2s ease-out;
+      width: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      padding-top: 5rem; 
+    }
 
-        /* 상단으로 이동했을 때 스타일 */
-        .stream-layer.move-top {
-            top: 0; transform: translateY(0) scale(1);
-            height: 80px; /* 작아짐 */
-            border-bottom: 4px solid #FEE500; /* 카카오 포인트 컬러 */
-        }
-
-        .track {
-            display: flex; gap: 20px; width: max-content;
-            animation: scrollLeft 10s linear infinite; padding-left: 20px;
-        }
-
-        /* 아이템 카드 */
-        .benefit-card {
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 16px; padding: 15px 25px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-width: 120px;
-            transition: all 0.5s;
-        }
-        .b-icon { font-size: 40px; margin-bottom: 5px; transition: font-size 0.5s; }
-        .b-text { font-size: 14px; color: #eee; font-weight: bold; white-space: nowrap; transition: font-size 0.5s; }
-
-        /* 상단 이동 시 아이템 축소 */
-        .stream-layer.move-top .benefit-card {
-            padding: 8px 15px; border-radius: 50px; min-width: auto; flex-direction: row; gap: 10px;
-        }
-        .stream-layer.move-top .b-icon { font-size: 20px; margin-bottom: 0; }
-        .stream-layer.move-top .b-text { font-size: 12px; }
-
-        @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-
-        /* [3. 메인 스테이지 (카카오 화면)] */
-        .main-stage {
-            flex: 1; position: relative;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            width: 100%; perspective: 1000px;
-            padding-top: 80px; /* 헤더 공간 확보 */
-        }
-
-        /* 폰 목업 */
-        .phone-card {
-            width: 85%; max-width: 320px; height: 440px;
-            background-color: #fff; border-radius: 24px;
-            position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            overflow: hidden; 
-            opacity: 0; transform: translateY(100px); /* 아래에서 대기 */
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .phone-card.show { opacity: 1; transform: translateY(0); }
-
-        /* 카카오 UI */
-        .kakao-ui { padding: 25px; height: 100%; display: flex; flex-direction: column; }
-        .k-header { display: flex; align-items: center; margin-bottom: 25px; }
-        .k-logo { width: 36px; height: 36px; background: #2C3E50; border-radius: 10px; margin-right: 10px; }
-        .k-app-name { font-weight: bold; color: #333; font-size: 14px; }
-
-        /* 타겟 1: 전체 동의 */
-        .agree-row {
-            display: flex; align-items: flex-start; padding: 15px;
-            border: 2px solid #eee; border-radius: 12px; margin-bottom: 20px;
-            transition: all 0.3s;
-        }
-        .agree-row.highlight { border-color: #FEE500; background: #fffdf5; transform: scale(1.02); }
-        
-        .check-circle {
-            width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ddd;
-            margin-right: 12px; position: relative; background: #fff; transition: all 0.3s;
-        }
-        .check-circle.checked { background: #FEE500; border-color: #FEE500; }
-        .check-circle.checked::after {
-            content: '✔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 12px; color: #000;
-        }
-        .agree-label { font-size: 15px; font-weight: bold; color: #333; }
-        .agree-sub { font-size: 11px; color: #888; margin-top: 4px; }
-
-        .dummy-list { flex: 1; opacity: 0.4; }
-        .dummy-row { display: flex; align-items: center; margin-bottom: 10px; }
-        .d-check { color: #ddd; margin-right: 8px; font-size: 12px; }
-        .d-line { height: 8px; background: #eee; border-radius: 4px; width: 100%; }
-
-        /* 타겟 2: 버튼 */
-        .btn-area { margin-top: auto; }
-        .k-btn {
-            width: 100%; height: 50px; background: #f2f2f2; color: #ccc;
-            border-radius: 8px; border: none; font-weight: 800; font-size: 15px;
-            transition: all 0.3s; cursor: pointer;
-        }
-        .k-btn.active { background: #FEE500; color: #191919; box-shadow: 0 4px 10px rgba(254, 229, 0, 0.4); }
-        .k-btn.pressed { transform: scale(0.95); }
-
-
-        /* [4. 하단 가이드 텍스트] */
-        .guide-box {
-            height: 120px; width: 100%; text-align: center;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: #111; z-index: 20; position: relative;
-        }
-        .guide-msg {
-            font-size: 19px; color: #fff; transition: all 0.4s;
-            position: absolute; opacity: 0; transform: translateY(15px); width: 100%; padding: 0 20px;
-            line-height: 1.4;
-        }
-        .guide-msg.active { opacity: 1; transform: translateY(0); }
-        .sub-text { font-size: 14px; color: #888; margin-top: 5px; font-weight: normal; }
-        
-        .hl { color: #FEE500; font-weight: bold; }
-
-        /* [5. 가상 손가락] */
-        .ghost-hand {
-            position: absolute; width: 44px; height: 44px; z-index: 90;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74z"/><path d="M21 15l-4.88 4.88c-.39.39-1.02.39-1.41 0L9.41 14.59c-.78-.78-.78-2.05 0-2.83L10 11.17V7.5c0-1.93 1.57-3.5 3.5-3.5s3.5 1.57 3.5 3.5v6h1v-2h2v3.5z"/></svg>') no-repeat center/contain;
-            top: 110%; left: 50%; opacity: 0; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            background-color: rgba(255,255,255,0.9); border-radius: 50%; padding: 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-
-        /* [6. 완료 오버레이] */
-        .success-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; z-index: 200; transition: opacity 0.5s;
-        }
-        .success-icon { font-size: 60px; margin-bottom: 20px; transform: scale(0); transition: transform 0.5s; }
-        .success-msg { font-size: 24px; font-weight: bold; color: #fff; }
-
-    </style>
+    /* 키가 작은 폰 대응 */
+    @media (max-height: 750px) { .responsive-content { transform: scale(0.90); } }
+    @media (max-height: 650px) { .responsive-content { transform: scale(0.85) translateY(-2rem); } }
+  </style>
 </head>
 <body>
 
-    <div class="stream-layer" id="streamLayer">
-        <div class="track">
-            <div class="benefit-card"><div class="b-icon">🎁</div><div class="b-text">웰컴 선물</div></div>
-            <div class="benefit-card"><div class="b-icon">🎫</div><div class="b-text">할인 쿠폰</div></div>
-            <div class="benefit-card"><div class="b-icon">☕</div><div class="b-text">커피 100원</div></div>
-            <div class="benefit-card"><div class="b-icon">🎡</div><div class="b-text">룰렛 기회</div></div>
-            <div class="benefit-card"><div class="b-icon">🎁</div><div class="b-text">웰컴 선물</div></div>
-            <div class="benefit-card"><div class="b-icon">🎫</div><div class="b-text">할인 쿠폰</div></div>
-            <div class="benefit-card"><div class="b-icon">☕</div><div class="b-text">커피 100원</div></div>
-            <div class="benefit-card"><div class="b-icon">🎡</div><div class="b-text">룰렛 기회</div></div>
-        </div>
-    </div>
+  <div class="fixed inset-0 w-full h-full flex flex-col items-center justify-start bg-[#FEF2F2]">
 
-    <div class="main-stage">
-        <div class="phone-card" id="phoneCard">
-            <div class="kakao-ui">
-                <div class="k-header">
-                    <div class="k-logo"></div>
-                    <div class="k-app-name">서비스명</div>
-                </div>
+    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 via-red-600 to-red-500 z-50"></div>
 
-                <div class="agree-row" id="agreeRow">
-                    <div class="check-circle" id="mainCheck"></div>
-                    <div>
-                        <div class="agree-label">전체 동의하기</div>
-                        <div class="agree-sub">선택목적 포함, 서비스 이용 가능</div>
-                    </div>
-                </div>
-
-                <div class="dummy-list">
-                    <div class="dummy-row"><span class="d-check">✔</span><div class="d-line" style="width:70%"></div></div>
-                    <div class="dummy-row"><span class="d-check">✔</span><div class="d-line" style="width:50%"></div></div>
-                </div>
-
-                <div class="btn-area">
-                    <button class="k-btn" id="submitBtn">동의하고 계속하기</button>
-                </div>
+    <div class="absolute top-2 left-0 w-full bg-white border-b border-red-100 shadow-[0_2px_8px_rgba(0,0,0,0.05)] z-40 py-3 px-6 flex items-center justify-center gap-3">
+        <div class="relative flex-shrink-0">
+            <div class="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center border-2 border-white shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-white">
+                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                </svg>
             </div>
         </div>
-        <div class="ghost-hand" id="hand"></div>
-    </div>
-
-    <div class="guide-box">
-        <div class="guide-msg active" id="msg1">
-            고객님을 위한 혜택이<br>도착했습니다! 🎁
-        </div>
-        <div class="guide-msg" id="msg2">
-            잠시 후 화면이 나오면<br><span class="hl">전체 동의</span>를 체크하고
-            <div class="sub-text">(번거로운 입력은 없습니다)</div>
-        </div>
-        <div class="guide-msg" id="msg3">
-            하단의 <span class="hl">노란색 버튼</span>만<br>누르면 끝!
-        </div>
-        <div class="guide-msg" id="msg4">
-            자, 이제 직접 눌러보세요! 👇
-            <div class="sub-text">(3초면 충분합니다)</div>
+        <div class="flex flex-col items-start justify-center">
+             <span class="text-[11px] font-bold text-[#059669] leading-none mb-0.5 tracking-tight">
+                패스오더 공식 인증 완료
+             </span>
+             <span class="text-[#1e293b] text-[14px] font-extrabold tracking-tight leading-none">
+                우리 동네 카페 서포터즈가 전달 드려요
+             </span>
         </div>
     </div>
 
-    <div class="success-overlay" id="successOverlay">
-        <div class="success-icon" id="sIcon">✅</div>
-        <div class="success-msg">연결 완료!</div>
+    <div class="responsive-content px-6 relative z-10 pb-10">
+      
+      <div class="text-center mb-3 w-full max-w-[340px]">
+        <div class="border-b-2 border-red-100 pb-3 mb-0.5 mx-auto w-fit px-4">
+          <h1 class="text-[26px] font-black text-[#132d48] leading-relaxed tracking-tight">
+            ⚠️<br>고객 컴플레인 확인 요청
+          </h1>
+        </div>
+        <p class="text-[#334155] text-[16px] leading-relaxed break-keep font-semibold">
+          패스오더 앱에 등록된 
+          <span class="text-red-600 relative inline-block font-bold">
+            메뉴/가격
+            <span class="absolute bottom-1 left-0 w-full h-[6px] bg-red-100 -z-10"></span>
+          </span>이<br>
+          매장과 달라 
+          <span class="text-red-600 relative inline-block font-bold">
+            고객 컴플레인
+            <span class="absolute bottom-1 left-0 w-full h-[6px] bg-red-100 -z-10"></span>
+          </span>이 발생했어요.
+        </p>
+      </div>
+      
+      <div class="mb-6 w-full max-w-[320px]">
+          <div class="bg-white border-2 border-red-100 rounded-2xl p-3.5 shadow-[0_4px_12px_rgba(239,68,68,0.08)] text-left relative">
+            <div class="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-t-2 border-l-2 border-red-100 rotate-45"></div>
+            <div class="flex flex-col gap-1.5">
+              <div class="flex items-center gap-1.5 border-b border-red-50 pb-1.5 mb-0.5">
+                 <span class="text-base">📢</span>
+                 <p class="text-red-500 font-bold text-[13px]">고객 불만 접수 내용</p>
+              </div>
+              <p class="text-[#132d48] text-[14px] font-medium leading-snug break-keep bg-gray-50 p-2.5 rounded-lg">
+                "앱 보고 주문하려는데 매장 가격이랑 달라요. 메뉴판 업데이트 좀 해주세요."
+              </p>
+            </div>
+          </div>
+      </div>
+
+      <div class="relative group mb-4">
+        <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-red-400 rounded-[30px] blur opacity-20 animate-pulse"></div>
+        
+        <div class="relative bg-white p-2 rounded-[24px] border-2 border-red-100 shadow-xl">
+          <div class="border border-dashed border-gray-300 rounded-[20px] p-1.5 bg-white flex items-center justify-center">
+             <img src="{{QR_SRC}}" class="w-[45vw] max-w-[160px] h-[45vw] max-h-[160px] object-contain rounded-lg" alt="QR Code" />
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full max-w-[260px] mb-6">
+         <div class="bg-[#132d48] text-white py-3 rounded-full text-[14px] font-bold shadow-lg flex justify-center items-center gap-1 w-full hover:scale-105 transition-transform cursor-pointer">
+            ▲ 지금 바로 수정하기 ▲
+         </div>
+      </div>
+
+      <div class="text-center space-y-2 mb-4">
+        <p class="text-[#132d48] font-bold text-[16px]">
+          총 <span class="text-red-600 text-[20px] font-extrabold">3건</span>의 고객 컴플레인이 있습니다.
+        </p>
+      </div>
+
     </div>
 
-    <script>
-        window.onload = function() {
-            const streamLayer = document.getElementById('streamLayer');
-            const phoneCard = document.getElementById('phoneCard');
-            const agreeRow = document.getElementById('agreeRow');
-            const mainCheck = document.getElementById('mainCheck');
-            const submitBtn = document.getElementById('submitBtn');
-            const hand = document.getElementById('hand');
-            const successOverlay = document.getElementById('successOverlay');
-            const sIcon = document.getElementById('sIcon');
+    <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 via-red-600 to-red-500 z-50"></div>
 
-            const msgs = [
-                document.getElementById('msg1'),
-                document.getElementById('msg2'),
-                document.getElementById('msg3'),
-                document.getElementById('msg4')
-            ];
+  </div>
 
-            function showMsg(index) {
-                msgs.forEach(m => m.classList.remove('active'));
-                msgs[index].classList.add('active');
-            }
-
-            function moveHandTo(element) {
-                const rect = element.getBoundingClientRect();
-                const wrapper = document.querySelector('.main-stage').getBoundingClientRect();
-                const top = rect.top - wrapper.top + (rect.height/2) + 15;
-                const left = rect.left - wrapper.left + (rect.width/2) + 10;
-                hand.style.top = `${top}px`;
-                hand.style.left = `${left}px`;
-            }
-
-            // --- [8초 시나리오] ---
-
-            // 0.0s: 중앙에서 혜택 흐름 (Attraction Phase)
-
-            // 2.5s: 위로 이동 & 카카오 화면 등장 (Transition Phase)
-            setTimeout(() => {
-                streamLayer.classList.add('move-top'); // 상단 헤더로 변신
-                phoneCard.classList.add('show');       // 폰 화면 등장
-                showMsg(1);                            // "전체 동의 체크하고"
-            }, 2500);
-
-            // 3.5s: 손가락 등장 & 전체 동의 이동
-            setTimeout(() => {
-                hand.style.opacity = '1';
-                moveHandTo(agreeRow);
-            }, 3500);
-
-            // 4.5s: 체크 클릭 모션
-            setTimeout(() => {
-                hand.style.transform = "scale(0.8)";
-                agreeRow.classList.add('highlight');
-                mainCheck.classList.add('checked');
-                submitBtn.classList.add('active'); // 버튼 노란색 활성
-            }, 4500);
-
-            // 5.0s: 버튼으로 이동
-            setTimeout(() => {
-                hand.style.transform = "scale(1)";
-                moveHandTo(submitBtn);
-                showMsg(2); // "버튼만 누르면 끝"
-            }, 5000);
-
-            // 6.0s: 버튼 클릭 모션 (시연)
-            setTimeout(() => {
-                hand.style.transform = "scale(0.8)";
-                submitBtn.classList.add('pressed');
-                setTimeout(() => {
-                    hand.style.transform = "scale(1)";
-                    submitBtn.classList.remove('pressed');
-                }, 200);
-            }, 6000);
-
-            // 6.8s: 유저에게 권한 이양
-            setTimeout(() => {
-                hand.style.opacity = '0';
-                showMsg(3); // "직접 눌러보세요"
-                
-                // 유저 클릭 대기
-                submitBtn.onclick = function() {
-                    successOverlay.style.opacity = '1';
-                    sIcon.style.transform = 'scale(1)';
-                    // location.href = "URL";
-                };
-            }, 6800);
-        };
-    </script>
 </body>
 </html>
