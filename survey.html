@@ -47,6 +47,7 @@
       padding-bottom: env(safe-area-inset-bottom);
     }
 
+    /* iOS input 스타일 초기화 */
     input, select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -89,7 +90,7 @@
             <input type="hidden" id="uid-field" name="uid" />
             <input type="hidden" id="variant-field" name="variant" />
             <input type="hidden" id="submission-id-field" name="submissionId" />
-
+            
             <div id="role-section" class="flex flex-col gap-2">
                 <label class="text-brandDark font-bold text-[15px] pl-1">어떤 분이신가요?</label>
                 <div class="relative">
@@ -113,25 +114,27 @@
 
                 <div class="input-group">
                     <label class="text-brandDark font-bold text-[15px] pl-1 mb-2 block">사업자등록번호</label>
-                    <input type="tel" inputmode="numeric" pattern="[0-9]*" id="biz-number" name="businessNumber" placeholder="000-00-00000" maxlength="12" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
+                    <input type="tel" inputmode="numeric" id="biz-number" name="businessNumber" placeholder="000-00-00000" maxlength="12" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
                     <p class="error-msg text-error text-[13px] mt-1.5 pl-1 hidden">사업자번호 10자리를 정확히 입력해주세요.</p>
                 </div>
 
                 <div class="input-group">
                     <label class="text-brandDark font-bold text-[15px] pl-1 mb-2 block">사장님 휴대폰 번호</label>
-                    <input type="tel" inputmode="numeric" pattern="[0-9]*" id="owner-phone" name="phone" placeholder="010-0000-0000" maxlength="13" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
+                    <input type="tel" inputmode="numeric" id="owner-phone" name="phone" placeholder="010-0000-0000" maxlength="13" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
                     <p class="error-msg text-error text-[13px] mt-1.5 pl-1 hidden">휴대폰 번호를 올바르게 입력해주세요.</p>
                 </div>
 
-                <label class="flex items-start gap-3 p-1 cursor-pointer select-none">
-                    <input type="checkbox" id="agree" name="agreement" value="Y" class="w-6 h-6 mt-0.5 text-brand focus:ring-brand border-gray-300 rounded shrink-0" />
-                    <span class="text-[15px] text-gray-600 leading-snug pt-0.5">
-                        개인정보 수집 및 이용에 동의합니다 <span class="text-brand font-bold">(필수)</span>
-                    </span>
-                </label>
-                <p id="agree-error" class="text-error text-[13px] pl-1 hidden -mt-3">동의가 필요합니다.</p>
+                <div class="input-group">
+                    <label class="flex items-start gap-3 p-1 cursor-pointer select-none">
+                        <input type="checkbox" id="agree" name="agreement" value="Y" class="w-6 h-6 mt-0.5 text-brand focus:ring-brand border-gray-300 rounded shrink-0" />
+                        <span class="text-[15px] text-gray-600 leading-snug pt-0.5">
+                            개인정보 수집 및 이용에 동의합니다 <span class="text-brand font-bold">(필수)</span>
+                        </span>
+                    </label>
+                    <p id="agree-error" class="text-error text-[13px] pl-1 hidden mt-1">동의가 필요합니다.</p>
+                </div>
 
-                <div class="h-4"></div>
+                <div class="h-2"></div>
 
                 <button type="submit" id="owner-submit-btn" class="w-full bg-brand text-white h-14 rounded-xl text-[17px] font-bold shadow-lg shadow-brand/20 active:scale-[0.98] active:bg-[#e66d42] transition flex justify-center items-center gap-2">
                     제출하기
@@ -169,7 +172,7 @@
                     
                     <div class="input-group">
                         <label class="text-brandDark font-bold text-[15px] pl-1 mb-2 block">사장님 휴대폰 번호</label>
-                        <input type="tel" inputmode="numeric" pattern="[0-9]*" id="staff-owner-phone" name="ownerPhone" placeholder="010-0000-0000" maxlength="13" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
+                        <input type="tel" inputmode="numeric" id="staff-owner-phone" name="ownerPhone" placeholder="010-0000-0000" maxlength="13" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
                         <p class="error-msg text-error text-[13px] mt-1.5 pl-1 hidden">휴대폰 번호를 올바르게 입력해주세요.</p>
                     </div>
                     
@@ -201,7 +204,7 @@
   </template>
 
   <script>
-    /* 1. 기본 설정 및 데이터 파이프라인 (절대 변경 금지) */
+    /* 1. 기본 설정 */
     const params = new URLSearchParams(location.search);
     const uid = params.get("uid") || "";
     const variant = params.get("variant") || "";
@@ -230,7 +233,7 @@
     const ownerStore = document.getElementById("owner-store");
     const ownerPhone = document.getElementById("owner-phone");
     const bizNumber = document.getElementById("biz-number");
-    const agree = document.getElementById("agree");
+    const agree = document.getElementById("agree"); // 체크박스 참조
     const staffStore = document.getElementById("staff-store");
     const staffName = document.getElementById("staff-name");
     const staffOwnerPhone = document.getElementById("staff-owner-phone");
@@ -244,14 +247,11 @@
         progressBar.style.width = percent + "%";
     }
 
-    /* 4. 역할 선택 및 화면 전환 */
+    /* 4. 역할 선택 */
     roleSelect.addEventListener("change", () => {
         const val = roleSelect.value;
-        
-        // Reset
         ownerFields.classList.add("hidden");
         ownerFields.classList.remove("visible"); 
-
         staffFields.classList.add("hidden");
         
         if (val === "owner") {
@@ -260,13 +260,10 @@
             updateProgress(30); 
         } else if (val === "staff") {
             staffFields.classList.remove("hidden");
-            
             staffStep1.classList.remove("hidden");
             setTimeout(() => staffStep1.classList.add("visible"), 10);
-            
             staffStep2.classList.add("hidden");
             staffStep2.classList.remove("visible");
-            
             roleSection.classList.remove("hidden");
             updateProgress(50); 
         } else {
@@ -274,7 +271,7 @@
         }
     });
 
-    /* 5. 오토 포맷팅 */
+    /* 5. 오토 포맷팅 및 에러제거 */
     function formatPhone(input) {
         let v = input.value.replace(/[^0-9]/g, "");
         if (v.length <= 3) input.value = v;
@@ -297,12 +294,13 @@
     [ownerStore, staffStore, staffName].forEach(el => {
         el.addEventListener("input", () => clearError(el));
     });
+    
+    // 동의 체크하면 에러메시지 숨기기
     agree.addEventListener("change", () => {
-        document.getElementById("agree-error").classList.add("hidden");
+        if(agree.checked) document.getElementById("agree-error").classList.add("hidden");
     });
 
-
-    /* 6. 직원: 다음 버튼 (1차 전송 포함) */
+    /* 6. 직원: 다음 버튼 */
     staffNextBtn.addEventListener("click", () => {
         let isValid = true;
         if(!staffStore.value.trim()) { showError(staffStore); isValid = false; }
@@ -312,11 +310,9 @@
 
         updateProgress(90); 
         
-        // Hide Step 1
         staffStep1.classList.remove("visible"); 
         staffStep1.classList.add("hidden");
         
-        // Show Step 2
         staffStep2.classList.remove("hidden");
         setTimeout(() => {
             staffStep2.classList.add("visible");
@@ -327,7 +323,6 @@
         const formData = new FormData(form);
         fetch(gasUrl, { method: 'POST', body: formData, mode: 'no-cors' });
     });
-
 
     /* 7. 최종 제출 */
     form.addEventListener("submit", (e) => {
@@ -342,9 +337,12 @@
             if(rawBiz.length !== 10) { showError(bizNumber); isValid = false; }
             const rawPhone = ownerPhone.value.replace(/[^0-9]/g, "");
             if(rawPhone.length < 10) { showError(ownerPhone); isValid = false; }
+            
+            // ★복구됨: 동의 체크 확인
             if(!agree.checked) {
                 document.getElementById("agree-error").classList.remove("hidden");
-                isValid = false;
+                // 체크박스 쪽을 흔드는 효과 대신 에러메시지만 노출
+                isValid = false; 
             }
         } else {
             const rawPhone = staffOwnerPhone.value.replace(/[^0-9]/g, "");
@@ -357,7 +355,6 @@
         const btn = isOwner ? ownerSubmitBtn : staffSubmitBtn;
         setLoadingState(btn);
 
-        // Remove hyphens for server
         if(isOwner) {
             bizNumber.value = bizNumber.value.replace(/[^0-9]/g, "");
             ownerPhone.value = ownerPhone.value.replace(/[^0-9]/g, "");
@@ -370,7 +367,6 @@
         .then(() => showSuccess())
         .catch(() => showSuccess());
     });
-
 
     /* 8. Helpers */
     function showError(inputElement) {
