@@ -34,29 +34,26 @@
   <style>
     /* 모바일 전용 초기화 */
     html, body {
-      overscroll-behavior-y: none; /* 당겨서 새로고침 방지 (앱 느낌) */
+      overscroll-behavior-y: none;
       touch-action: pan-y;
       height: 100%;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      -webkit-tap-highlight-color: transparent; /* 터치 시 회색 박스 제거 */
+      -webkit-tap-highlight-color: transparent;
     }
     
-    /* 아이폰 노치/하단바 대응 */
     .safe-area-padding {
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
     }
 
-    /* 입력창 모바일 기본 스타일 제거 (iOS) */
     input, select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
-      border-radius: 0.75rem; /* tailwind rounded-xl 대응 */
+      border-radius: 0.75rem;
     }
 
-    /* 페이드 효과 */
     .fade-in { 
       transition: opacity 0.3s ease-out, transform 0.3s ease-out; 
       opacity: 0; 
@@ -83,7 +80,7 @@
     
     <div id="form-container" class="flex-1 overflow-y-auto px-5 pt-8 pb-10">
         
-        <header class="mb-8">
+        <header class="mb-8 text-center">
             <h1 class="text-[26px] font-bold text-brandDark leading-tight tracking-tight">사장님 확인이<br>필요해요</h1>
             <p class="text-gray-500 text-[15px] mt-3 leading-snug">안전한 매장 운영을 위해<br>정보를 확인하고 있습니다.</p>
         </header>
@@ -400,7 +397,6 @@
         btn.classList.remove("bg-brand", "shadow-lg");
     }
     function showSuccess() {
-        // 성공 화면을 flex로 표시하여 중앙 정렬
         successView.classList.remove("hidden");
         successView.classList.add("flex");
     }
