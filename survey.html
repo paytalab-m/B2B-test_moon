@@ -47,12 +47,22 @@
       padding-bottom: env(safe-area-inset-bottom);
     }
 
-    /* iOS input 스타일 초기화 */
-    input, select {
+    /* ★중요 수정: 텍스트 입력창만 스타일 초기화 (체크박스는 건드리지 않음) */
+    input:not([type="checkbox"]), select {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
       border-radius: 0.75rem;
+    }
+
+    /* ★중요 수정: 체크박스 스타일 강제 적용 */
+    input[type="checkbox"] {
+      -webkit-appearance: checkbox; /* 브라우저 기본 체크박스 복구 */
+      appearance: auto;
+      accent-color: #ff7949; /* 체크 시 브랜드 컬러 적용 */
+      width: 1.25rem; /* 크기 키움 (20px) */
+      height: 1.25rem;
+      border-radius: 0.25rem;
     }
 
     .fade-in { 
@@ -125,13 +135,13 @@
                 </div>
 
                 <div class="input-group">
-                    <label class="flex items-start gap-3 p-1 cursor-pointer select-none">
-                        <input type="checkbox" id="agree" name="agreement" value="Y" class="w-6 h-6 mt-0.5 text-brand focus:ring-brand border-gray-300 rounded shrink-0" />
+                    <label class="flex items-center gap-3 p-1 cursor-pointer select-none">
+                        <input type="checkbox" id="agree" name="agreement" value="Y" class="shrink-0 cursor-pointer" />
                         <span class="text-[15px] text-gray-600 leading-snug pt-0.5">
                             개인정보 수집 및 이용에 동의합니다 <span class="text-brand font-bold">(필수)</span>
                         </span>
                     </label>
-                    <p id="agree-error" class="text-error text-[13px] pl-1 hidden mt-1">동의가 필요합니다.</p>
+                    <p id="agree-error" class="text-error text-[13px] pl-1 hidden mt-2 ml-8">동의가 필요합니다.</p>
                 </div>
 
                 <div class="h-2"></div>
@@ -233,7 +243,7 @@
     const ownerStore = document.getElementById("owner-store");
     const ownerPhone = document.getElementById("owner-phone");
     const bizNumber = document.getElementById("biz-number");
-    const agree = document.getElementById("agree"); // 체크박스 참조
+    const agree = document.getElementById("agree");
     const staffStore = document.getElementById("staff-store");
     const staffName = document.getElementById("staff-name");
     const staffOwnerPhone = document.getElementById("staff-owner-phone");
@@ -295,7 +305,6 @@
         el.addEventListener("input", () => clearError(el));
     });
     
-    // 동의 체크하면 에러메시지 숨기기
     agree.addEventListener("change", () => {
         if(agree.checked) document.getElementById("agree-error").classList.add("hidden");
     });
@@ -338,10 +347,8 @@
             const rawPhone = ownerPhone.value.replace(/[^0-9]/g, "");
             if(rawPhone.length < 10) { showError(ownerPhone); isValid = false; }
             
-            // ★복구됨: 동의 체크 확인
             if(!agree.checked) {
                 document.getElementById("agree-error").classList.remove("hidden");
-                // 체크박스 쪽을 흔드는 효과 대신 에러메시지만 노출
                 isValid = false; 
             }
         } else {
