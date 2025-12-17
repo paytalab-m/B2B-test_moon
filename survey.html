@@ -3,16 +3,34 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: { brand: '#ff7949', brandDark: '#132d48', error: '#ef4444' },
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'sans-serif'],
+          },
+          colors: { 
+            brand: '#ff7949', 
+            brandLight: '#fff1ec',
+            brandDark: '#132d48', 
+            grayBg: '#F7F8FA', 
+            inputBg: '#F2F4F6', // 회색 배경
+            error: '#FF4B4B' 
+          },
+          boxShadow: {
+            'btn': '0 8px 20px -4px rgba(255, 121, 73, 0.4)',
+            'card': '0 4px 20px rgba(0, 0, 0, 0.04)',
+          },
           animation: {
-            'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
-            'pop-in': 'popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+            'shake': 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both',
+            'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'fade-in': 'fadeIn 0.3s ease-out forwards',
+            'bell-swing': 'bellSwing 2s infinite ease-in-out',
           },
           keyframes: {
             shake: {
@@ -21,9 +39,20 @@
               '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
               '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
             },
-            popIn: {
-              '0%': { opacity: '0', transform: 'scale(0.95)' },
-              '100%': { opacity: '1', transform: 'scale(1)' }
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' }
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' }
+            },
+            bellSwing: {
+              '0%, 100%': { transform: 'rotate(0deg)' },
+              '20%': { transform: 'rotate(15deg)' },
+              '40%': { transform: 'rotate(-10deg)' },
+              '60%': { transform: 'rotate(5deg)' },
+              '80%': { transform: 'rotate(-5deg)' }
             }
           }
         }
@@ -32,163 +61,215 @@
   </script>
 
   <style>
-    /* 모바일 전용 초기화 */
+    /* 기본 설정 */
     html, body {
       overscroll-behavior-y: none;
       touch-action: pan-y;
       height: 100%;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      background-color: #ffffff;
       -webkit-tap-highlight-color: transparent;
     }
-    
     .safe-area-padding {
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
     }
 
-    /* ★중요 수정: 텍스트 입력창만 스타일 초기화 (체크박스는 건드리지 않음) */
+    /* 입력창 스타일 */
     input:not([type="checkbox"]), select {
       -webkit-appearance: none;
-      -moz-appearance: none;
       appearance: none;
-      border-radius: 0.75rem;
+      transition: all 0.2s ease;
     }
 
-    /* ★중요 수정: 체크박스 스타일 강제 적용 */
+    /* 텍스트 입력창만 포커스 시 흰색으로 변경 */
+    input:not([type="checkbox"]):focus {
+      background-color: #ffffff;
+      box-shadow: 0 0 0 2px #ff7949;
+    }
+
+    /* 셀렉트 박스는 포커스 되어도 회색 배경 유지 */
+    select:focus {
+      background-color: #F2F4F6; 
+      box-shadow: 0 0 0 2px #ff7949;
+    }
+
+    /* 체크박스 스타일 */
     input[type="checkbox"] {
-      -webkit-appearance: checkbox; /* 브라우저 기본 체크박스 복구 */
+      -webkit-appearance: checkbox;
       appearance: auto;
-      accent-color: #ff7949; /* 체크 시 브랜드 컬러 적용 */
-      width: 1.25rem; /* 크기 키움 (20px) */
-      height: 1.25rem;
+      accent-color: #ff7949;
+      width: 1.35rem; 
+      height: 1.35rem;
       border-radius: 0.25rem;
+      border: 1px solid #d1d5db;
+      background-color: white;
+      cursor: pointer;
     }
 
-    .fade-in { 
-      transition: opacity 0.3s ease-out, transform 0.3s ease-out; 
-      opacity: 0; 
-      transform: translateY(10px); 
-    }
-    .fade-in.visible { 
-      opacity: 1; 
-      transform: translateY(0); 
-    }
+    .fade-in-section { opacity: 0; }
+    .fade-in-section.visible { animation: slideUp 0.5s forwards; }
 
-    #progress-bar { transition: width 0.4s ease-in-out; }
+    #progress-bar { transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
   </style>
 
-  <title>패스오더 매장 정보 확인</title>
+  <title>패스오더 공식 매장 확인</title>
 </head>
 
-<body class="bg-gray-50 text-gray-900 font-sans">
+<body class="bg-white text-gray-900 font-sans flex flex-col min-h-[100dvh]">
 
-  <div class="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-    <div id="progress-bar" class="h-full bg-brand w-[0%]"></div>
+  <div class="fixed top-0 left-0 w-full h-1 bg-gray-100 z-50">
+    <div id="progress-bar" class="h-full bg-brand w-[0%] rounded-r-full shadow-[0_0_10px_rgba(255,121,73,0.5)]"></div>
   </div>
 
-  <div class="w-full h-[100dvh] flex flex-col safe-area-padding">
+  <div class="w-full flex-1 flex flex-col safe-area-padding max-w-[480px] mx-auto">
     
-    <div id="form-container" class="flex-1 overflow-y-auto px-5 pt-8 pb-10">
+    <div id="form-container" class="flex-1 px-6 pt-10 pb-10">
         
-        <header class="mb-8 text-center">
-            <h1 class="text-[26px] font-bold text-brandDark leading-tight tracking-tight">사장님 확인이<br>필요해요</h1>
-            <p class="text-gray-500 text-[15px] mt-3 leading-snug">안전한 매장 운영을 위해<br>정보를 확인하고 있습니다.</p>
+        <header class="mb-10 text-center flex flex-col items-center">
+            
+            <div class="inline-flex items-center gap-2 bg-blue-50/90 backdrop-blur-md text-blue-700 px-4 py-2 rounded-full border border-blue-200 shadow-sm mb-6 animate-fade-in z-10">
+                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="text-[13px] font-bold tracking-tight pt-[1px]">패스오더에서 제공하는 공식 페이지입니다</span>
+            </div>
+
+            <div id="header-titles" class="transition-all duration-500 ease-in-out overflow-hidden origin-top animate-slide-up">
+                
+                <div class="bg-[#FFF8F6] rounded-[26px] py-8 px-6 text-center mx-1 mb-2">
+                    
+                    <h1 class="text-[26px] font-bold text-[#191F28] leading-[1.35] tracking-tight break-keep mb-3">
+                        잠깐! 실제로 매장을<br>
+                        운영하시는 <span class="text-[#FF7949]">사장님</span> 이신가요?
+                    </h1>
+
+                    <p class="text-[#6B7684] text-[16px] leading-relaxed tracking-tight font-medium">
+                        실제 사장님이신지<br>
+                        간단한 확인이 필요합니다.
+                    </p>
+                </div>
+
+            </div>
         </header>
 
-        <form id="info-form" class="flex flex-col gap-6">
+        <form id="info-form" class="flex flex-col gap-5">
             <input type="hidden" id="uid-field" name="uid" />
             <input type="hidden" id="variant-field" name="variant" />
             <input type="hidden" id="submission-id-field" name="submissionId" />
             
-            <div id="role-section" class="flex flex-col gap-2">
-                <label class="text-brandDark font-bold text-[15px] pl-1">어떤 분이신가요?</label>
+            <div id="role-section" class="flex flex-col gap-2 animate-slide-up" style="animation-delay: 0.2s">
+                <label class="text-gray-800 font-bold text-[15px] pl-1">누가 확인하고 계신가요?</label>
                 <div class="relative">
-                    <select id="role-select" name="role" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors">
+                    <select id="role-select" name="role" class="w-full bg-inputBg border-transparent px-5 h-[3.75rem] rounded-2xl text-[17px] text-gray-800 outline-none focus:ring-0">
                         <option value="">선택해주세요</option>
-                        <option value="owner">사장님 (매니저)</option>
-                        <option value="staff">직원 (아르바이트)</option>
+                        <option value="owner">사장님(매니저)</option>
+                        <option value="staff">직원</option>
                     </select>
-                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                    <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </div>
                 </div>
             </div>
 
-            <div id="owner-fields" class="hidden flex flex-col gap-6 fade-in">
+            <div id="owner-fields" class="hidden flex flex-col gap-6 fade-in-section">
                 <div class="input-group">
-                    <label class="text-brandDark font-bold text-[15px] pl-1 mb-2 block">매장명</label>
-                    <input type="text" id="owner-store" name="storeName" placeholder="예: 패스오더 강남점" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
-                    <p class="error-msg text-error text-[13px] mt-1.5 pl-1 hidden">매장명을 입력해주세요.</p>
+                    <label class="text-gray-800 font-bold text-[15px] pl-1 mb-2 block">매장명</label>
+                    <input type="text" id="owner-store" name="storeName" placeholder="매장명을 입력해주세요 (예시:패스커피 강남점)" class="w-full bg-inputBg border-transparent px-5 h-[3.75rem] rounded-2xl text-[17px] outline-none placeholder-gray-400 font-medium"/>
+                    <p class="error-msg text-error text-[13px] mt-1.5 pl-1 font-medium hidden">매장명을 입력해주세요.</p>
                 </div>
 
                 <div class="input-group">
-                    <label class="text-brandDark font-bold text-[15px] pl-1 mb-2 block">사업자등록번호</label>
-                    <input type="tel" inputmode="numeric" id="biz-number" name="businessNumber" placeholder="000-00-00000" maxlength="12" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
-                    <p class="error-msg text-error text-[13px] mt-1.5 pl-1 hidden">사업자번호 10자리를 정확히 입력해주세요.</p>
+                    <label class="text-gray-800 font-bold text-[15px] pl-1 mb-2 block">사업자등록번호</label>
+                    <div class="relative group">
+                        <input type="tel" inputmode="numeric" id="biz-number" name="businessNumber" placeholder="숫자 10자리 입력" maxlength="12" class="w-full bg-inputBg border-transparent px-5 h-[3.75rem] rounded-2xl text-[17px] outline-none placeholder-gray-400 font-medium"/>
+                        <div class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand transition-colors">
+                           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="mt-2.5 p-3 bg-gray-50 rounded-xl flex items-start gap-2 border border-gray-100">
+                        <svg class="w-4 h-4 text-green-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        <p class="text-[12px] text-gray-500 leading-snug">동일한 매장명의 카페를 구분을 위해 필요하며,<br><span class="font-bold text-gray-700">암호화되어 안전하게 보호됩니다.</span></p>
+                    </div>
+                    <p class="error-msg text-error text-[13px] mt-1 pl-1 font-medium hidden">사업자번호 10자리를 정확히 입력해주세요.</p>
                 </div>
 
                 <div class="input-group">
-                    <label class="text-brandDark font-bold text-[15px] pl-1 mb-2 block">사장님 휴대폰 번호</label>
-                    <input type="tel" inputmode="numeric" id="owner-phone" name="phone" placeholder="010-0000-0000" maxlength="13" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
-                    <p class="error-msg text-error text-[13px] mt-1.5 pl-1 hidden">휴대폰 번호를 올바르게 입력해주세요.</p>
+                    <label class="text-gray-800 font-bold text-[15px] pl-1 mb-2 block">사장님 휴대폰 번호</label>
+                    <input type="tel" inputmode="numeric" id="owner-phone" name="phone" placeholder="010-0000-0000" maxlength="13" class="w-full bg-inputBg border-transparent px-5 h-[3.75rem] rounded-2xl text-[17px] outline-none placeholder-gray-400 font-medium"/>
+                    <p class="error-msg text-error text-[13px] mt-1.5 pl-1 font-medium hidden">휴대폰 번호를 올바르게 입력해주세요.</p>
                 </div>
 
-                <div class="input-group">
-                    <label class="flex items-center gap-3 p-1 cursor-pointer select-none">
-                        <input type="checkbox" id="agree" name="agreement" value="Y" class="shrink-0 cursor-pointer" />
-                        <span class="text-[15px] text-gray-600 leading-snug pt-0.5">
+                <div class="input-group pt-1">
+                    <label class="flex items-center gap-3 p-2 -ml-2 rounded-lg active:bg-gray-50 transition-colors cursor-pointer select-none">
+                        <input type="checkbox" id="agree" name="agreement" value="Y" class="shrink-0" />
+                        <span class="text-[15px] text-gray-600 leading-snug tracking-tight">
                             개인정보 수집 및 이용에 동의합니다 <span class="text-brand font-bold">(필수)</span>
                         </span>
                     </label>
-                    <p id="agree-error" class="text-error text-[13px] pl-1 hidden mt-2 ml-8">동의가 필요합니다.</p>
+                    <p id="agree-error" class="text-error text-[13px] pl-1 hidden mt-1 ml-9 font-medium">동의가 필요합니다.</p>
                 </div>
 
-                <div class="h-2"></div>
+                <div class="h-4"></div>
 
-                <button type="submit" id="owner-submit-btn" class="w-full bg-brand text-white h-14 rounded-xl text-[17px] font-bold shadow-lg shadow-brand/20 active:scale-[0.98] active:bg-[#e66d42] transition flex justify-center items-center gap-2">
-                    제출하기
+                <button type="submit" id="owner-submit-btn" class="w-full bg-brand text-white h-[3.75rem] rounded-2xl text-[17px] font-bold shadow-btn active:scale-[0.98] active:shadow-none transition-all flex justify-center items-center gap-2">
+                    확인 완료
                 </button>
             </div>
 
             <div id="staff-fields" class="hidden">
-                
-                <div id="staff-step-1" class="flex flex-col gap-6 fade-in">
+                <div id="staff-step-1" class="flex flex-col gap-6 fade-in-section">
                     <div class="input-group">
-                        <label class="text-brandDark font-bold text-[15px] pl-1 mb-2 block">매장명</label>
-                        <input type="text" id="staff-store" name="storeNameStaff" placeholder="예: 패스오더 강남점" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
-                        <p class="error-msg text-error text-[13px] mt-1.5 pl-1 hidden">매장명을 입력해주세요.</p>
+                        <label class="text-gray-800 font-bold text-[15px] pl-1 mb-2 block">매장명</label>
+                        <input type="text" id="staff-store" name="storeNameStaff" placeholder="매장명을 입력해주세요 (예시:패스커피 강남점)" class="w-full bg-inputBg border-transparent px-5 h-[3.75rem] rounded-2xl text-[17px] outline-none placeholder-gray-400 font-medium"/>
+                        <p class="error-msg text-error text-[13px] mt-1.5 pl-1 font-medium hidden">매장명을 입력해주세요.</p>
                     </div>
                     <div class="input-group">
-                        <label class="text-brandDark font-bold text-[15px] pl-1 mb-2 block">이름</label>
-                        <input type="text" id="staff-name" name="staffName" placeholder="본인 이름을 입력해주세요" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
-                        <p class="error-msg text-error text-[13px] mt-1.5 pl-1 hidden">이름을 입력해주세요.</p>
+                        <label class="text-gray-800 font-bold text-[15px] pl-1 mb-2 block">이름</label>
+                        <input type="text" id="staff-name" name="staffName" placeholder="직원분의 이름을 입력해주세요" class="w-full bg-inputBg border-transparent px-5 h-[3.75rem] rounded-2xl text-[17px] outline-none placeholder-gray-400 font-medium"/>
+                        <p class="error-msg text-error text-[13px] mt-1.5 pl-1 font-medium hidden">이름을 입력해주세요.</p>
                     </div>
                     
                     <div class="h-4"></div>
-
-                    <button type="button" id="staff-next-btn" class="w-full bg-brand text-white h-14 rounded-xl text-[17px] font-bold shadow-lg shadow-brand/20 active:scale-[0.98] active:bg-[#e66d42] transition">
+                    <button type="button" id="staff-next-btn" class="w-full bg-brand text-white h-[3.75rem] rounded-2xl text-[17px] font-bold shadow-btn active:scale-[0.98] active:shadow-none transition-all">
                         다음
                     </button>
                 </div>
 
-                <div id="staff-step-2" class="hidden flex flex-col gap-6 fade-in">
-                    <div class="bg-orange-50 border border-orange-100 p-5 rounded-2xl text-center animate-pop-in shadow-sm">
-                        <p class="text-brandDark font-bold text-[16px] leading-relaxed break-keep">
-                            ⚠️ <span class="text-brand">사장님 번호</span>가 맞나요?<br>
-                            <span class="text-[13px] text-gray-500 font-normal mt-1 block">사장님께 확인 문자가 발송됩니다.</span>
+                <div id="staff-step-2" class="hidden flex flex-col gap-6 fade-in-section">
+                    
+                    <div class="bg-red-50 border border-red-100 p-6 rounded-[24px] text-center shadow-card relative overflow-hidden">
+                        
+                        <div class="text-[42px] mb-4 animate-bell-swing inline-block origin-top drop-shadow-sm">
+                            🔔
+                        </div>
+
+                        <div class="flex justify-center mb-3">
+                            <span class="bg-white border border-red-100 text-red-600 text-[12px] font-bold px-3 py-1 rounded-full shadow-sm tracking-tight">
+                                📢 매장 운영 필수 안내
+                            </span>
+                        </div>
+
+                        <h2 class="text-gray-900 font-bold text-[20px] leading-[1.35] mb-3 tracking-tight break-keep">
+                            지금 사장님께 꼭 전달되어야 하는<br>긴급한 내용입니다
+                        </h2>
+
+                        <p class="text-gray-500 text-[15px] leading-relaxed break-keep tracking-tight">
+                            사장님 번호를 입력하시면,<br>
+                            내용이 <span class="text-brand font-bold">바로 전달</span> 됩니다.
                         </p>
                     </div>
-                    
+
                     <div class="input-group">
-                        <label class="text-brandDark font-bold text-[15px] pl-1 mb-2 block">사장님 휴대폰 번호</label>
-                        <input type="tel" inputmode="numeric" id="staff-owner-phone" name="ownerPhone" placeholder="010-0000-0000" maxlength="13" class="w-full border border-gray-300 bg-white px-4 h-14 rounded-xl text-[17px] focus:border-brand focus:ring-1 focus:ring-brand outline-none placeholder-gray-300"/>
-                        <p class="error-msg text-error text-[13px] mt-1.5 pl-1 hidden">휴대폰 번호를 올바르게 입력해주세요.</p>
+                        <label class="text-gray-800 font-bold text-[15px] pl-1 mb-2 block">사장님 휴대폰 번호</label>
+                        <input type="tel" inputmode="numeric" id="staff-owner-phone" name="ownerPhone" placeholder="010-0000-0000" maxlength="13" class="w-full bg-inputBg border-transparent px-5 h-[3.75rem] rounded-2xl text-[17px] outline-none placeholder-gray-400 font-medium"/>
+                        <p class="error-msg text-error text-[13px] mt-1.5 pl-1 font-medium hidden">휴대폰 번호를 올바르게 입력해주세요.</p>
                     </div>
                     
-                    <div class="h-4"></div>
-
-                    <button type="submit" id="staff-submit-btn" class="w-full bg-brand text-white h-14 rounded-xl text-[17px] font-bold shadow-lg shadow-brand/20 active:scale-[0.98] active:bg-[#e66d42] transition flex justify-center items-center gap-2">
+                    <div class="h-2"></div>
+                    
+                    <button type="submit" id="staff-submit-btn" class="w-full bg-brand text-white h-[3.75rem] rounded-2xl text-[17px] font-bold shadow-btn active:scale-[0.98] active:shadow-none transition-all flex justify-center items-center gap-2">
                         사장님께 전달하기
                     </button>
                 </div>
@@ -196,12 +277,31 @@
         </form>
     </div>
 
-    <div id="success-view" class="hidden flex-col justify-center items-center w-full h-full absolute top-0 left-0 bg-white z-50 text-center px-6">
-        <div class="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mb-8 animate-pop-in">
-            <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+    <footer class="bg-gray-50 py-10 px-6 text-center border-t border-gray-100 mt-auto">
+        <div class="flex flex-col items-center gap-1 mb-5 opacity-60 grayscale">
+             <img src="https://paytalab-m.github.io/B2B-test_moon/logo.png" class="h-4" alt="logo"/>
         </div>
-        <div class="text-[#132d48] font-[800] text-[30px] mb-3 leading-tight animate-pop-in" style="animation-delay: 0.1s">제출 완료!</div>
-        <p class="text-gray-500 text-[16px] leading-relaxed animate-pop-in" style="animation-delay: 0.2s">소중한 정보 감사합니다.<br>빠르게 안내드릴게요.</p>
+        
+        <div class="text-gray-400 text-[10px] leading-relaxed tracking-tight space-y-1 break-keep">
+            <p><span class="font-semibold">상호명 (주)페이타랩</span> | 대표 곽수용 | 사업자등록번호 452-87-01123</p>
+            <p>통신판매업 등록번호 2018-부산해운대-0457</p>
+            <div class="mt-2 mb-2 pt-2 border-t border-gray-200 border-dashed w-[80%] mx-auto"></div>
+            <p>서울특별시 강남구 영동대로85길 34 스파크플러스 삼성2호점 6층</p>
+            <p>부산 부산진구 서면로 39, KT&G 상상마당 6층</p>
+            <div class="mt-2 mb-2 pt-2 border-t border-gray-200 border-dashed w-[80%] mx-auto"></div>
+            <p><span class="font-semibold">고객센터 1644-8725</span> | 이메일 help@passorder.co.kr</p>
+        </div>
+        
+        <p class="text-gray-300 text-[10px] mt-5 font-medium tracking-wide">©2019 PAYTA LAB CORP. ALL RIGHT RESERVED</p>
+    </footer>
+
+    <div id="success-view" class="hidden flex-col justify-center items-center w-full h-full fixed top-0 left-0 bg-white z-[999] text-center px-6 safe-area-padding">
+        
+        <div id="success-icon" class="mb-6"></div>
+        
+        <h2 id="success-title" class="text-[#191F28] font-bold text-[26px] leading-tight mb-3 tracking-tight"></h2>
+        
+        <p id="success-desc" class="text-[#8B95A1] text-[16px] leading-relaxed"></p>
     </div>
 
   </div>
@@ -229,7 +329,6 @@
 
     /* 2. UI 요소 참조 */
     const progressBar = document.getElementById("progress-bar");
-    const formContainer = document.getElementById("form-container");
     const successView = document.getElementById("success-view");
     const form = document.getElementById("info-form");
     
@@ -260,9 +359,17 @@
     /* 4. 역할 선택 */
     roleSelect.addEventListener("change", () => {
         const val = roleSelect.value;
+        
+        // 초기화
         ownerFields.classList.add("hidden");
-        ownerFields.classList.remove("visible"); 
+        ownerFields.classList.remove("visible");
         staffFields.classList.add("hidden");
+        
+        // 역할 변경 시 타이틀 보이기
+        const titleGroup = document.getElementById("header-titles");
+        titleGroup.style.opacity = '1';
+        titleGroup.style.height = 'auto';
+        titleGroup.style.margin = '0';
         
         if (val === "owner") {
             ownerFields.classList.remove("hidden");
@@ -272,16 +379,16 @@
             staffFields.classList.remove("hidden");
             staffStep1.classList.remove("hidden");
             setTimeout(() => staffStep1.classList.add("visible"), 10);
+            
             staffStep2.classList.add("hidden");
             staffStep2.classList.remove("visible");
-            roleSection.classList.remove("hidden");
             updateProgress(50); 
         } else {
             updateProgress(0);
         }
     });
 
-    /* 5. 오토 포맷팅 및 에러제거 */
+    /* 5. 오토 포맷팅 */
     function formatPhone(input) {
         let v = input.value.replace(/[^0-9]/g, "");
         if (v.length <= 3) input.value = v;
@@ -309,7 +416,7 @@
         if(agree.checked) document.getElementById("agree-error").classList.add("hidden");
     });
 
-    /* 6. 직원: 다음 버튼 */
+    /* 6. 직원 Flow */
     staffNextBtn.addEventListener("click", () => {
         let isValid = true;
         if(!staffStore.value.trim()) { showError(staffStore); isValid = false; }
@@ -319,15 +426,19 @@
 
         updateProgress(90); 
         
-        staffStep1.classList.remove("visible"); 
+        // 타이틀 숨기기
+        const titleGroup = document.getElementById("header-titles");
+        titleGroup.style.opacity = '0';
+        titleGroup.style.height = '0';
+        titleGroup.style.margin = '0';
+        
+        staffStep1.classList.remove("visible");
         staffStep1.classList.add("hidden");
         
         staffStep2.classList.remove("hidden");
-        setTimeout(() => {
-            staffStep2.classList.add("visible");
-        }, 10);
+        setTimeout(() => staffStep2.classList.add("visible"), 10);
         
-        roleSection.classList.add("hidden");
+        document.getElementById("role-section").classList.add("hidden");
 
         const formData = new FormData(form);
         fetch(gasUrl, { method: 'POST', body: formData, mode: 'no-cors' });
@@ -362,6 +473,7 @@
         const btn = isOwner ? ownerSubmitBtn : staffSubmitBtn;
         setLoadingState(btn);
 
+        // 하이픈 제거
         if(isOwner) {
             bizNumber.value = bizNumber.value.replace(/[^0-9]/g, "");
             ownerPhone.value = ownerPhone.value.replace(/[^0-9]/g, "");
@@ -375,11 +487,11 @@
         .catch(() => showSuccess());
     });
 
-    /* 8. Helpers */
+    /* Helpers */
     function showError(inputElement) {
         const group = inputElement.closest('.input-group');
         const errorMsg = group.querySelector('.error-msg');
-        inputElement.classList.add('border-error', 'ring-1', 'ring-error', 'animate-shake');
+        inputElement.classList.add('bg-red-50', 'ring-1', 'ring-error', 'animate-shake');
         errorMsg.classList.remove('hidden');
         setTimeout(() => { inputElement.classList.remove('animate-shake'); }, 500);
     }
@@ -387,7 +499,7 @@
         const group = inputElement.closest('.input-group');
         if(!group) return;
         const errorMsg = group.querySelector('.error-msg');
-        inputElement.classList.remove('border-error', 'ring-1', 'ring-error');
+        inputElement.classList.remove('bg-red-50', 'ring-1', 'ring-error');
         if(errorMsg) errorMsg.classList.add('hidden');
     }
     function setLoadingState(btn) {
@@ -396,10 +508,39 @@
         const spinner = document.getElementById("spinner-icon").content.cloneNode(true);
         btn.appendChild(spinner);
         btn.append(" 처리 중...");
-        btn.classList.add("bg-gray-400");
-        btn.classList.remove("bg-brand", "shadow-lg");
+        btn.classList.add("opacity-70", "cursor-not-allowed");
     }
+    
+    /* 결과 화면 표시 함수 (최종 수정됨) */
     function showSuccess() {
+        const isOwner = roleSelect.value === "owner";
+        const iconEl = document.getElementById("success-icon");
+        const titleEl = document.getElementById("success-title");
+        const descEl = document.getElementById("success-desc");
+
+        if (isOwner) {
+            // 사장님 Case
+            iconEl.innerHTML = `
+                <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto">
+                    <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
+                    </svg>
+                </div>`;
+            titleEl.textContent = "사장님 확인이 완료되었습니다.";
+            descEl.textContent = "빠르게 연락드리겠습니다.";
+            
+        } else {
+            // 직원 Case
+            iconEl.innerHTML = `
+                <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto">
+                    <svg class="w-9 h-9 text-blue-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"></path>
+                    </svg>
+                </div>`;
+            titleEl.textContent = "사장님께 전달이 완료되었습니다.";
+            descEl.textContent = "";
+        }
+
         successView.classList.remove("hidden");
         successView.classList.add("flex");
     }
