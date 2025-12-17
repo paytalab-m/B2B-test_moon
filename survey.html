@@ -41,13 +41,19 @@
       -webkit-font-smoothing: antialiased;
     }
     .safe-bottom { padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)); }
-    .fade-in { transition: opacity 0.3s ease-out, transform 0.3s ease-out; opacity: 0; transform: translateY(10px); }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
     
-    /* 프로그레스바 트랜지션 */
+    /* 애니메이션용 CSS */
+    .fade-in { 
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out; 
+      opacity: 0; 
+      transform: translateY(10px); 
+    }
+    .fade-in.visible { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+    
     #progress-bar { transition: width 0.5s ease-in-out; }
-    
-    /* 입력창 포커스 시 부드러운 전환 */
     input, select { transition: all 0.2s; }
   </style>
 
@@ -82,7 +88,7 @@
                 </select>
             </div>
 
-            <div id="owner-fields" class="hidden flex flex-col gap-5">
+            <div id="owner-fields" class="hidden flex flex-col gap-5 fade-in">
                 <div class="input-group">
                     <label class="text-brandDark font-bold text-sm mb-1 block">매장명</label>
                     <input type="text" id="owner-store" name="storeName" placeholder="예: 패스오더 강남점" class="w-full border border-gray-300 px-4 py-3.5 rounded-xl text-[16px] focus:border-brand focus:ring-1 focus:ring-brand outline-none"/>
@@ -115,6 +121,7 @@
             </div>
 
             <div id="staff-fields" class="hidden">
+                
                 <div id="staff-step-1" class="flex flex-col gap-5 fade-in">
                     <div class="input-group">
                         <label class="text-brandDark font-bold text-sm mb-1 block">매장명</label>
@@ -169,7 +176,7 @@
   </template>
 
   <script>
-    /* 1. 기본 설정 및 데이터 파이프라인 (변경 금지 구역) */
+    /* 1. 기본 설정 및 데이터 파이프라인 */
     const params = new URLSearchParams(location.search);
     const uid = params.get("uid") || "";
     const variant = params.get("variant") || "";
@@ -188,7 +195,6 @@
     const successView = document.getElementById("success-view");
     const form = document.getElementById("info-form");
     
-    // 섹션
     const roleSelect = document.getElementById("role-select");
     const roleSection = document.getElementById("role-section");
     const ownerFields = document.getElementById("owner-fields");
@@ -196,7 +202,6 @@
     const staffStep1 = document.getElementById("staff-step-1");
     const staffStep2 = document.getElementById("staff-step-2");
 
-    // 입력 필드
     const ownerStore = document.getElementById("owner-store");
     const ownerPhone = document.getElementById("owner-phone");
     const bizNumber = document.getElementById("biz-number");
@@ -205,7 +210,6 @@
     const staffName = document.getElementById("staff-name");
     const staffOwnerPhone = document.getElementById("staff-owner-phone");
 
-    // 버튼
     const ownerSubmitBtn = document.getElementById("owner-submit-btn");
     const staffNextBtn = document.getElementById("staff-next-btn");
     const staffSubmitBtn = document.getElementById("staff-submit-btn");
@@ -221,20 +225,26 @@
         
         // 초기화
         ownerFields.classList.add("hidden");
+        ownerFields.classList.remove("visible"); // 애니메이션 리셋
+
         staffFields.classList.add("hidden");
         
         if (val === "owner") {
             ownerFields.classList.remove("hidden");
+            // 약간의 딜레이 후 visible 추가 (애니메이션 효과)
+            setTimeout(() => ownerFields.classList.add("visible"), 10);
             updateProgress(30); 
-            // 사장님은 입력할게 많아서 30% 시작
         } else if (val === "staff") {
             staffFields.classList.remove("hidden");
+            
             staffStep1.classList.remove("hidden");
-            staffStep1.classList.add("visible");
+            setTimeout(() => staffStep1.classList.add("visible"), 10); // Step 1 보이기
+            
             staffStep2.classList.add("hidden");
+            staffStep2.classList.remove("visible"); // Step 2 숨기기 상태 확실히
+            
             roleSection.classList.remove("hidden");
             updateProgress(50); 
-            // 직원은 단계가 나뉘므로 50% 시작
         } else {
             updateProgress(0);
         }
@@ -248,17 +258,14 @@
         else input.value = v.slice(0,3) + "-" + v.slice(3,7) + "-" + v.slice(7,11);
         clearError(input);
     }
-
     function formatBizNum(input) {
         let v = input.value.replace(/[^0-9]/g, "");
-        // 000-00-00000 포맷
         if (v.length <= 3) input.value = v;
         else if (v.length <= 5) input.value = v.slice(0,3) + "-" + v.slice(3);
         else input.value = v.slice(0,3) + "-" + v.slice(3,5) + "-" + v.slice(5,10);
         clearError(input);
     }
     
-    // 이벤트 리스너 연결
     ownerPhone.addEventListener("input", e => formatPhone(e.target));
     staffOwnerPhone.addEventListener("input", e => formatPhone(e.target));
     bizNumber.addEventListener("input", e => formatBizNum(e.target));
@@ -271,29 +278,36 @@
     });
 
 
-    /* 6. 직원: '다음' 버튼 (중간 저장 포함) */
+    /* 6. 직원: '다음' 버튼 (수정됨: 애니메이션 버그 픽스) */
     staffNextBtn.addEventListener("click", () => {
         let isValid = true;
-
         if(!staffStore.value.trim()) { showError(staffStore); isValid = false; }
         if(!staffName.value.trim()) { showError(staffName); isValid = false; }
 
-        if(!isValid) return; // 유효성 실패시 중단
+        if(!isValid) return; 
 
-        // 성공 로직
-        updateProgress(90); // 진행률 업데이트
+        updateProgress(90); 
         
+        // 1. Step 1 숨기기
+        staffStep1.classList.remove("visible"); 
         staffStep1.classList.add("hidden");
+        
+        // 2. Step 2 보이기 (★여기가 문제였습니다. 수정 완료★)
         staffStep2.classList.remove("hidden");
-        roleSection.classList.add("hidden"); // 역할 선택 숨김 (집중)
+        // 브라우저가 hidden 제거를 인식한 뒤에 visible을 붙여야 페이드인이 됩니다.
+        setTimeout(() => {
+            staffStep2.classList.add("visible");
+        }, 10);
+        
+        roleSection.classList.add("hidden");
 
-        // ★ 기존 데이터 로직 유지: 서버로 1차 조용히 전송
+        // 3. 서버 전송 (기존 로직 유지)
         const formData = new FormData(form);
         fetch(gasUrl, { method: 'POST', body: formData, mode: 'no-cors' });
     });
 
 
-    /* 7. 최종 제출 로직 (공통) */
+    /* 7. 최종 제출 로직 */
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         
@@ -301,43 +315,27 @@
         let isValid = true;
 
         if (isOwner) {
-            // 사장님 유효성 검사
             if(!ownerStore.value.trim()) { showError(ownerStore); isValid = false; }
-            
-            // 사업자번호: 숫자만 10자리인지 확인 (하이픈 제외하고 계산)
             const rawBiz = bizNumber.value.replace(/[^0-9]/g, "");
             if(rawBiz.length !== 10) { showError(bizNumber); isValid = false; }
-            
-            // 폰번호: 최소 10자리
             const rawPhone = ownerPhone.value.replace(/[^0-9]/g, "");
             if(rawPhone.length < 10) { showError(ownerPhone); isValid = false; }
-            
             if(!agree.checked) {
                 document.getElementById("agree-error").classList.remove("hidden");
-                // 체크박스 쪽으로 스크롤하지 않고 흔들기 효과만 줄 수도 있음
                 isValid = false;
             }
         } else {
-            // 직원 Step 2 유효성 검사
             const rawPhone = staffOwnerPhone.value.replace(/[^0-9]/g, "");
             if(rawPhone.length < 10) { showError(staffOwnerPhone); isValid = false; }
         }
 
-        if(!isValid) return; // 하나라도 틀리면 전송 안함
+        if(!isValid) return; 
 
-        // --- 전송 프로세스 시작 ---
         updateProgress(100);
-        
-        // 1. 버튼 로딩 상태로 변경
         const btn = isOwner ? ownerSubmitBtn : staffSubmitBtn;
         setLoadingState(btn);
 
-        // 2. ★중요: 서버에는 '숫자'만 보내기 위해 포맷팅(하이픈) 제거
-        // 폼 데이터를 만들기 전에 값을 클린징합니다.
-        // 하지만 사용자 눈에는 하이픈이 보여야 하므로, FormData만 조작하는게 베스트지만
-        // 간단하게 처리하기 위해 input value를 잠깐 바꿨다가 복구하거나,
-        // 아니면 그냥 보내되 GAS에서 처리하기도 함. 
-        // 여기서는 안전하게 value에서 하이픈 제거하고 전송
+        // 데이터 포맷팅 (서버엔 숫자만 전송)
         if(isOwner) {
             bizNumber.value = bizNumber.value.replace(/[^0-9]/g, "");
             ownerPhone.value = ownerPhone.value.replace(/[^0-9]/g, "");
@@ -346,57 +344,39 @@
         }
 
         const formData = new FormData(form);
-        
-        // 3. 데이터 전송
         fetch(gasUrl, { method: 'POST', body: formData, mode: 'no-cors' })
         .then(() => showSuccess())
-        .catch(() => showSuccess()); // no-cors라 에러나도 성공처리 UX
+        .catch(() => showSuccess());
     });
 
 
-    /* 8. 헬퍼 함수들 (UI/UX) */
-    
-    // 에러 보여주기 (흔들림 효과 + 메시지 노출)
+    /* 8. 헬퍼 함수 */
     function showError(inputElement) {
         const group = inputElement.closest('.input-group');
         const errorMsg = group.querySelector('.error-msg');
-        
         inputElement.classList.add('border-error', 'ring-1', 'ring-error', 'animate-shake');
         errorMsg.classList.remove('hidden');
-        
-        // 애니메이션 끝나면 흔들림 클래스 제거 (재실행 가능하게)
-        setTimeout(() => {
-            inputElement.classList.remove('animate-shake');
-        }, 820);
+        setTimeout(() => { inputElement.classList.remove('animate-shake'); }, 820);
     }
-
-    // 에러 지우기 (입력 시작하면)
     function clearError(inputElement) {
         const group = inputElement.closest('.input-group');
         if(!group) return;
         const errorMsg = group.querySelector('.error-msg');
-        
         inputElement.classList.remove('border-error', 'ring-1', 'ring-error');
         if(errorMsg) errorMsg.classList.add('hidden');
     }
-
-    // 버튼 로딩 상태 만들기
     function setLoadingState(btn) {
         btn.disabled = true;
-        const originalText = btn.textContent;
-        btn.innerHTML = ``; // 내용 비우고
+        btn.innerHTML = ``; 
         const spinner = document.getElementById("spinner-icon").content.cloneNode(true);
         btn.appendChild(spinner);
         btn.append(" 처리 중...");
-        btn.classList.add("bg-gray-400"); // 색상 연하게
+        btn.classList.add("bg-gray-400");
         btn.classList.remove("bg-brand", "shadow-lg");
     }
-
-    // 성공 화면 전환
     function showSuccess() {
         formContainer.style.display = 'none';
         successView.classList.remove("hidden");
-        // 프로그레스바 꽉 채우기 (확실하게)
         updateProgress(100);
     }
   </script>
